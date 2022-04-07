@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DB Rust</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <script src="src/codemirror/lib/codemirror.js"></script>
+    <link rel="stylesheet" href="src/codemirror/lib/codemirror.css" type="text/css">
+    <link rel="stylesheet" href="src/codemirror/theme/blackboard.css" type="text/css">
+    <script src="src/codemirror/mode/xml/xml.js" type="text/javascript"></script>
+  </head>
+  <body>
+  <section class="section">
+    <div class="container">
+      <nav class="navbar has-shadow">
+        <div class="navbar-brand">
+          <a class="navbar-item" onclick="Enviar_Conetndi()"> 
+            Ejecutar
+          </a>
+          <a class="navbar-item" id="tablita_simbolos" onclick="SendEditor()">
+            Editor
+          </a>
+          <a class="navbar-item" id="tablita-errores" onclick="SendRepos()">
+            Reportes
+          </a>
+          <a class="navbar-item" id="acerca_de">
+            Acerca De
+          </a>
+        </div>
+      </nav>
+      <h1 class="title">
+        Bienvenido a DB Rusts
+      </h1>
+      <div class="columns">
+        <div class="column">
+          Entrada
+          <textarea id="editor"></textarea>
+        </div>
+        <div class="column">
+          Salida
+          <textarea id="editor2"></textarea>
+        </div>
+        
+      </div>
+      
+    </div>
+    <div class="modal">
+      <div class="modal-background"></div>
+      <div class="modal-content has-background-white py-5 px-5">
+          <h3 class="tittle mb-6" id="dentro_Modal">  </h3>
+      </div>
+      
+    </div>
+  </section>
+  <script src="src/js/default.js"></script>
+  <script src="src/js/Reportes.js"></script>
+  <script src="src/js/funciones.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  </body>
+</html>
