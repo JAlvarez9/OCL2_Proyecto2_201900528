@@ -23,6 +23,8 @@ type Value struct {
 	Type       TipoExpresion
 	TrueLabel  string
 	FalseLabel string
+
+	Simbolin Symbol
 }
 
 type Expresion interface {

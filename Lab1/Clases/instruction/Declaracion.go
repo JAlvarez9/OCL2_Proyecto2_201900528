@@ -6,6 +6,7 @@ import (
 	p_Enviroment "LAB1/Clases/enviroment"
 	p_Interface "LAB1/Clases/interfaces"
 	"fmt"
+	"strconv"
 )
 
 type Declaration struct {
@@ -44,9 +45,30 @@ func (p Declaration) Ejecutar(controlador *p_Controlador.Controlador2, generador
 	}
 	env.(p_Enviroment.Enviroment).SaveVarible(controlador, p.Id, newSym, p.Tipo, p.IsMut, newSym.Ambito, p_Interface.NEUTRAL, p.Line, p.Columna)
 
-	a := fmt.Sprintf("%v", newSym.Posicion)
-	temporalin := generador.NewTemp()
-	generador.AddExpression(temporalin, "P", a, "+")
-	generador.AddStack(temporalin, result.Valor)
+	if result.Type == p_Interface.INTEGER || result.Type == p_Interface.FLOAT {
+		a := fmt.Sprintf("%v", newSym.Posicion)
+		temporalin := generador.NewTemp()
+		generador.AddExpression(temporalin, "P", a, "+")
+		generador.AddStack(temporalin, result.Valor)
+	} else if result.Type == p_Interface.STR || result.Type == p_Interface.STRING {
+		runas := []rune(result.Valor)
+		var ascii []int
+
+		for i := 0; i < len(runas); i++ {
+			ascii = append(ascii, int(runas[i]))
+		}
+		temporalin := generador.NewTemp()
+		generador.AddExpression(temporalin, "H", "", "")
+		for i := 0; i < len(ascii); i++ {
+			generador.AddHeap("H", strconv.Itoa(ascii[i]))
+			generador.AddExpression("H", "H", "1", "+")
+		}
+		generador.AddHeap("H", "-1")
+		generador.AddExpression("H", "H", "1", "+")
+		temporalin2 := generador.NewTemp()
+		generador.AddExpression(temporalin2, "P", strconv.Itoa(newSym.Posicion), "+")
+		generador.AddStack(temporalin2, temporalin)
+
+	}
 	return result
 }

@@ -29,6 +29,31 @@ func (p Imprimir) Ejecutar(controlador *p_Controlador.Controlador2, generador *p
 	var result p_Interface.Value
 
 	result = p.Expresion.Ejecutar(controlador, generador, env, env_uni)
+
+	if result.Simbolin.Valor != nil {
+		temporalin := generador.NewTemp()
+		a := fmt.Sprintf("%v", result.Simbolin.Posicion)
+		generador.AddExpression(temporalin, "P", a, "+")
+		temporalin2 := generador.NewTemp()
+		c := "STACK[(int)" + temporalin + "]"
+		generador.AddExpression(temporalin2, c, "", "")
+
+		switch result.Simbolin.Tipo {
+		case p_Interface.INTEGER:
+			b := "(int)" + temporalin2
+			generador.AddPrint("d", b)
+		case p_Interface.FLOAT:
+			b := "(float)" + temporalin2
+			generador.AddPrint("f", b)
+		case p_Interface.STR:
+			generador.AddImprimirString()
+			generador.Bring_Func("print_string")
+
+		}
+
+		return result
+	}
+
 	switch result.Type {
 	case p_Interface.INTEGER:
 		generador.AddPrint("d", "(int)"+fmt.Sprintf("%v", result.Valor))
@@ -37,10 +62,19 @@ func (p Imprimir) Ejecutar(controlador *p_Controlador.Controlador2, generador *p
 	case p_Interface.BOOLEAN:
 		newLabel := generador.NewLabel()
 		generador.AddLabel(result.TrueLabel)
-		generador.AddPrint("d", "(int)1")
+		generador.AddPrint("c", "(int)116")
+		generador.AddPrint("c", "(int)114")
+		generador.AddPrint("c", "(int)117")
+		generador.AddPrint("c", "(int)101")
+		generador.AddPrint("c", "(int)10")
 		generador.AddGoTo(newLabel)
 		generador.AddLabel(result.FalseLabel)
-		generador.AddPrint("d", "(int)0")
+		generador.AddPrint("c", "(int)102")
+		generador.AddPrint("c", "(int)97")
+		generador.AddPrint("c", "(int)108")
+		generador.AddPrint("c", "(int)115")
+		generador.AddPrint("c", "(int)101")
+		generador.AddPrint("c", "(int)10")
 		generador.AddLabel(newLabel)
 	case p_Interface.STR:
 
