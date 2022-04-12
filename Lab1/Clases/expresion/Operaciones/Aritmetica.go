@@ -6,6 +6,7 @@ import (
 	p_Generador "LAB1/Clases/Generador"
 	p_Enviroment "LAB1/Clases/enviroment"
 	p_Interface "LAB1/Clases/interfaces"
+	"strconv"
 )
 
 type Aritmetica struct {
@@ -24,7 +25,7 @@ func NewOperacion_Arit(op1 p_Interface.Expresion, operador string, op2 p_Interfa
 
 func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador *p_Generador.Generador, env interface{}, env_uni interface{}) p_Interface.Value {
 	var result p_Interface.Value
-
+	generador.AddComent("Inicio Aritmetico")
 	var retornoIzq p_Interface.Value
 	var retornoDer p_Interface.Value
 
@@ -277,15 +278,41 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 			//dominante = div_dominante[retornoIzq.Type][retornoDer.Type]
 
 			if retornoIzq.Type == p_Interface.INTEGER && retornoDer.Type == p_Interface.INTEGER {
-				generador.AddExpression(newTemp, retornoIzq.Valor, retornoDer.Valor, "/")
+
+				errorLabel := generador.NewLabel()
+				noErrorLabel := generador.NewLabel()
+				resultado := generador.NewTemp()
+				final := generador.NewLabel()
+				generador.AddIf(retornoDer.Valor, "0", "==", errorLabel)
+				generador.AddGoTo(noErrorLabel)
+				generador.AddLabel(errorLabel)
+				generador.Bring_Func("Native_Print_MathError")
+				generador.AddExpression(resultado, "0", "", "")
+				generador.AddGoTo(final)
+				generador.AddLabel(noErrorLabel)
+				generador.AddExpression(resultado, retornoIzq.Valor, retornoDer.Valor, "/")
+				generador.AddLabel(final)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      resultado,
 					IsTemp:     true,
 					Type:       p_Interface.INTEGER,
 					TrueLabel:  "",
 					FalseLabel: "",
 				}
 			} else if retornoIzq.Type == p_Interface.FLOAT && retornoDer.Type == p_Interface.FLOAT {
+
+				sup3, _ := strconv.ParseFloat(retornoDer.Valor, 8)
+
+				if sup3 == 0.0 {
+					return p_Interface.Value{
+						Valor:      newTemp,
+						IsTemp:     true,
+						Type:       p_Interface.NULL,
+						TrueLabel:  "",
+						FalseLabel: "",
+					}
+				}
+
 				generador.AddExpression(newTemp, retornoIzq.Valor, retornoDer.Valor, "/")
 				return p_Interface.Value{
 					Valor:      newTemp,
@@ -422,6 +449,6 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 			}
 		}
 	}
-
+	generador.AddComent("Final Aritmetico")
 	return result
 }

@@ -20,11 +20,22 @@ func NewPrimitivo(val interface{}, tipo p_Interface.TipoExpresion) Primitivo {
 
 func (p Primitivo) Ejecutar(controlador *p_Controlador.Controlador2, generador *p_Generador.Generador, env interface{}, env_uni interface{}) p_Interface.Value {
 
-	return p_Interface.Value{
+	soportin := p_Interface.Value{
 		Valor:      fmt.Sprintf("%v", p.Valor),
 		IsTemp:     false,
 		Type:       p.Tipo,
 		TrueLabel:  "",
 		FalseLabel: "",
 	}
+
+	if soportin.Type == p_Interface.BOOLEAN {
+		trueLabel := generador.NewLabel()
+		falseLabel := generador.NewLabel()
+
+		soportin.TrueLabel = trueLabel
+		soportin.FalseLabel = falseLabel
+	}
+
+	return soportin
+
 }

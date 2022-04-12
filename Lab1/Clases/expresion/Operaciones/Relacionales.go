@@ -24,7 +24,7 @@ func NewOperacion_Relacional(op1 p_Interface.Expresion, operador string, op2 p_I
 
 func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador *p_Generador.Generador, env interface{}, env_uni interface{}) p_Interface.Value {
 	var result p_Interface.Value
-
+	generador.AddComent("Inicio Relacional")
 	var retornoIzq p_Interface.Value
 	var retornoDer p_Interface.Value
 
@@ -35,22 +35,20 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 		retornoDer = p.Op2.Ejecutar(controlador, generador, env, env_uni)
 	}
 
-	newTemp := generador.NewTemp()
-
 	//var dominante p_Interface.TypeExpresion|
 
 	if retornoIzq.Type == -6 || retornoDer.Type == -6 {
 		var err = p_Errores.NewError("Es un error semantico", env.(p_Enviroment.Enviroment).HaveFatha(), p.Line, p.Column)
 		controlador.Errores.Add(err)
 		return p_Interface.Value{
-			Valor:      newTemp,
+			Valor:      "",
 			IsTemp:     true,
 			Type:       p_Interface.NULL,
 			TrueLabel:  "",
 			FalseLabel: "",
 		}
 	}
-
+	//sup3 := ""
 	switch p.Operador {
 	case "<":
 		{
@@ -63,7 +61,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -76,7 +74,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -90,7 +88,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -104,7 +102,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -118,7 +116,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -132,7 +130,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -146,7 +144,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -160,7 +158,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -174,7 +172,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -186,7 +184,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				controlador.Errores.Add(err)
 				controlador.Agregar_Consola("No se puede operar en la operacion relacional " + retornoIzq.Valor + " y " + retornoDer.Valor)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     true,
 					Type:       p_Interface.NULL,
 					TrueLabel:  "",
@@ -206,7 +204,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -219,7 +217,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -233,7 +231,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -247,7 +245,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -261,7 +259,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -275,7 +273,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -289,7 +287,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -303,7 +301,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -317,7 +315,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -329,7 +327,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				controlador.Errores.Add(err)
 				controlador.Agregar_Consola("No se puede operar en la operacion relacional " + retornoIzq.Valor + " y " + retornoDer.Valor)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     true,
 					Type:       p_Interface.NULL,
 					TrueLabel:  "",
@@ -349,7 +347,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -362,7 +360,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -376,7 +374,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -390,7 +388,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -404,7 +402,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -418,7 +416,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -432,7 +430,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -446,7 +444,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -460,7 +458,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -472,7 +470,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				controlador.Errores.Add(err)
 				controlador.Agregar_Consola("No se puede operar en la operacion relacional " + retornoIzq.Valor + " y " + retornoDer.Valor)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     true,
 					Type:       p_Interface.NULL,
 					TrueLabel:  "",
@@ -492,7 +490,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -505,7 +503,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -519,7 +517,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -533,7 +531,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -547,7 +545,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -561,7 +559,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -575,7 +573,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -589,7 +587,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -603,7 +601,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -615,7 +613,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				controlador.Errores.Add(err)
 				controlador.Agregar_Consola("No se puede operar en la operacion relacional " + retornoIzq.Valor + " y " + retornoDer.Valor)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     true,
 					Type:       p_Interface.NULL,
 					TrueLabel:  "",
@@ -635,7 +633,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -648,7 +646,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -662,7 +660,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -676,7 +674,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -690,7 +688,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -704,7 +702,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -718,7 +716,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -732,7 +730,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -746,7 +744,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -758,7 +756,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				controlador.Errores.Add(err)
 				controlador.Agregar_Consola("No se puede operar en la operacion relacional " + retornoIzq.Valor + " y " + retornoDer.Valor)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     true,
 					Type:       p_Interface.NULL,
 					TrueLabel:  "",
@@ -778,7 +776,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -791,7 +789,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -805,7 +803,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -819,7 +817,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -833,7 +831,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -847,7 +845,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -861,7 +859,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -875,7 +873,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -889,7 +887,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     false,
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
@@ -901,7 +899,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				controlador.Errores.Add(err)
 				controlador.Agregar_Consola("No se puede operar en la operacion relacional " + retornoIzq.Valor + " y " + retornoDer.Valor)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      "",
 					IsTemp:     true,
 					Type:       p_Interface.NULL,
 					TrueLabel:  "",
@@ -910,6 +908,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 			}
 		}
 	}
-
+	generador.AddComent("Final Relacional")
 	return result
 }

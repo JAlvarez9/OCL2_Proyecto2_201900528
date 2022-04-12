@@ -27,7 +27,7 @@ func NewImprimir(val p_Interface.Expresion, lista *arrayList.List, line int, col
 }
 func (p Imprimir) Ejecutar(controlador *p_Controlador.Controlador2, generador *p_Generador.Generador, env interface{}, env_uni interface{}) p_Interface.Value {
 	var result p_Interface.Value
-
+	generador.AddComent("Inicio Print")
 	result = p.Expresion.Ejecutar(controlador, generador, env, env_uni)
 
 	if result.Simbolin.Valor != nil {
@@ -60,21 +60,19 @@ func (p Imprimir) Ejecutar(controlador *p_Controlador.Controlador2, generador *p
 	case p_Interface.FLOAT:
 		generador.AddPrint("f", "(float)"+fmt.Sprintf("%v", result.Valor))
 	case p_Interface.BOOLEAN:
+
+		if result.Valor == "true" {
+			generador.AddGoTo(result.TrueLabel)
+		} else {
+			generador.AddGoTo(result.FalseLabel)
+		}
 		newLabel := generador.NewLabel()
 		generador.AddLabel(result.TrueLabel)
-		generador.AddPrint("c", "(int)116")
-		generador.AddPrint("c", "(int)114")
-		generador.AddPrint("c", "(int)117")
-		generador.AddPrint("c", "(int)101")
-		generador.AddPrint("c", "(int)10")
+		generador.Bring_Func("Native_Print_True")
 		generador.AddGoTo(newLabel)
 		generador.AddLabel(result.FalseLabel)
-		generador.AddPrint("c", "(int)102")
-		generador.AddPrint("c", "(int)97")
-		generador.AddPrint("c", "(int)108")
-		generador.AddPrint("c", "(int)115")
-		generador.AddPrint("c", "(int)101")
-		generador.AddPrint("c", "(int)10")
+		generador.Bring_Func("Native_Print_False")
+		generador.AddGoTo(newLabel)
 		generador.AddLabel(newLabel)
 	case p_Interface.STR:
 
@@ -89,8 +87,11 @@ func (p Imprimir) Ejecutar(controlador *p_Controlador.Controlador2, generador *p
 			generador.AddPrint("c", fmt.Sprintf("%v", s))
 		}
 		fmt.Println(val_Ascci)
-	}
+	case p_Interface.NULL:
 
+	}
+	generador.AddPrint("c", "(int)10")
+	generador.AddComent("Final Print")
 	return result
 }
 

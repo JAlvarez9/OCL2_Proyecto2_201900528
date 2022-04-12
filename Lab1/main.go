@@ -157,6 +157,11 @@ func (this *TreeShapeListener) ExitStart(ctx *parser.StartContext) {
 			}
 		}
 	}
+
+	generador.Func_Nat_Print_True()
+	generador.Func_Nat_Print_False()
+	generador.Func_Nat_Print_MathError()
+
 	salida += "#include <stdio.h>\n"
 	salida += "#include <math.h>\n"
 	salida += "double HEAP[82000];\n"
@@ -174,6 +179,12 @@ func (this *TreeShapeListener) ExitStart(ctx *parser.StartContext) {
 	}
 
 	salida += ";\n\n"
+
+	for _, s := range generador.GetFunctions().ToArray() {
+		salida += fmt.Sprintf("%v", s)
+		salida += "\n"
+	}
+
 	salida += "\nvoid main(){\n"
 
 	for _, s := range generador.GetCode().ToArray() {

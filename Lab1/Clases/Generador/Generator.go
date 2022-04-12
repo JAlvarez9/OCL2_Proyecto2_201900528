@@ -7,11 +7,15 @@ import (
 )
 
 type Generador struct {
-	Temporal    int
-	Label       int
-	Code        *arrayList.List
-	TempList    *arrayList.List
-	Native_Func *arrayList.List
+	Temporal int
+	Label    int
+	Code     *arrayList.List
+	TempList *arrayList.List
+
+	All_Func *arrayList.List
+	isFunc   bool
+
+	isNot bool
 }
 
 func NewGene() *Generador {
@@ -20,8 +24,25 @@ func NewGene() *Generador {
 		Label:    0,
 		Code:     arrayList.New(),
 		TempList: arrayList.New(),
+		All_Func: arrayList.New(),
+		isFunc:   false,
+		isNot:    false,
 	}
 	return &gene
+}
+
+//---------Add Instructs---------------
+
+func (g *Generador) AddInstruc(instr string) {
+	if g.isFunc {
+		g.All_Func.Add(instr)
+	} else {
+		g.Code.Add(instr)
+	}
+}
+
+func (g *Generador) GetFunctions() *arrayList.List {
+	return g.All_Func
 }
 
 func (g Generador) GetCode() *arrayList.List {
@@ -39,6 +60,13 @@ func (g *Generador) NewTemp() string {
 	return temp
 }
 
+func (g *Generador) SetNotTrue() {
+	g.isNot = true
+}
+func (g *Generador) SetNotFalse() {
+	g.isNot = false
+}
+
 func (g *Generador) NewLabel() string {
 	temp := g.Label
 	g.Label = g.Label + 1
@@ -47,43 +75,52 @@ func (g *Generador) NewLabel() string {
 }
 
 func (g *Generador) AddLabel(label string) {
-	g.Code.Add(label + ":")
+	g.AddInstruc(label + ":")
 }
 
 func (g *Generador) AddStack(posicion string, value string) {
-	g.Code.Add("STACK[(int)" + posicion + "] = " + value + ";")
+	g.AddInstruc("STACK[(int)" + posicion + "] = " + value + ";")
 }
 
 func (g *Generador) AddHeap(posicion string, value string) {
-	g.Code.Add("HEAP[(int)" + posicion + "] = " + value + ";")
+	g.AddInstruc("HEAP[(int)" + posicion + "] = " + value + ";")
 }
 
 func (g *Generador) AddExpression(target string, left string, right string, operator string) {
-	g.Code.Add(target + " = " + left + " " + operator + " " + right + ";")
+	g.AddInstruc(target + " = " + left + " " + operator + " " + right + ";")
 }
 
 func (g *Generador) AddExprePow(target string, left string, right string, operator string) {
-	g.Code.Add(target + " = " + "pow(" + left + "," + right + ");")
+	g.AddInstruc(target + " = " + "pow(" + left + "," + right + ");")
 }
 
 func (g *Generador) AddPrint(typePrint string, value string) {
-	g.Code.Add("printf(\"%" + typePrint + "\" ," + value + ");")
+	g.AddInstruc("printf(\"%" + typePrint + "\" ," + value + ");")
 }
 
 func (g *Generador) AddIf(left string, right string, opeartor string, label string) {
-	g.Code.Add("if(" + left + " " + opeartor + " " + right + ") goto " + label + ";")
+	g.AddInstruc("if(" + left + " " + opeartor + " " + right + ") goto " + label + ";")
 }
 
 func (g *Generador) AddGoTo(label string) {
-	g.Code.Add("goto " + label + ";")
+	g.AddInstruc("goto " + label + ";")
+}
+
+func (g *Generador) AddComent(label string) {
+	g.AddInstruc("//+++++++++++++ " + label + " +++++++++++++++++")
 }
 
 //FUNCIONES------------------------------
 
 func (g *Generador) Ini_func(tipo string, id string) {
+	g.isFunc = true
+	g.AddInstruc(tipo + " " + id + "(){ \n")
 
-	g.Code.Add(tipo + " " + id + "(){ \n")
+}
 
+func (g *Generador) Finish_func() {
+	g.AddInstruc("return; \n } \n")
+	g.isFunc = false
 }
 
 //---------------Imprimir String--------------------
@@ -112,6 +149,45 @@ func (g *Generador) AddImprimirString() {
 
 }
 
+//------------------Funciones Nativas--------------------
+
+func (g *Generador) Func_Nat_Print_True() {
+	g.Ini_func("void", "Native_Print_True")
+	g.AddPrint("c", "(int)116")
+	g.AddPrint("c", "(int)114")
+	g.AddPrint("c", "(int)117")
+	g.AddPrint("c", "(int)101")
+	g.AddPrint("c", "(int)10")
+	g.Finish_func()
+}
+
+func (g *Generador) Func_Nat_Print_False() {
+	g.Ini_func("void", "Native_Print_False")
+	g.AddPrint("c", "(int)102")
+	g.AddPrint("c", "(int)97")
+	g.AddPrint("c", "(int)108")
+	g.AddPrint("c", "(int)115")
+	g.AddPrint("c", "(int)101")
+	g.AddPrint("c", "(int)10")
+	g.Finish_func()
+}
+
+func (g *Generador) Func_Nat_Print_MathError() {
+	g.Ini_func("void", "Native_Print_MathError")
+	g.AddPrint("c", "(int)77")
+	g.AddPrint("c", "(int)97")
+	g.AddPrint("c", "(int)116")
+	g.AddPrint("c", "(int)104")
+	g.AddPrint("c", "(int)32")
+	g.AddPrint("c", "(int)69")
+	g.AddPrint("c", "(int)114")
+	g.AddPrint("c", "(int)114")
+	g.AddPrint("c", "(int)111")
+	g.AddPrint("c", "(int)114")
+	g.AddPrint("c", "(int)10")
+	g.Finish_func()
+}
+
 func (g *Generador) Bring_Func(id string) {
-	g.Code.Add(id + "();")
+	g.AddInstruc(id + "();")
 }
