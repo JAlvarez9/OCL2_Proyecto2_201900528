@@ -15,18 +15,25 @@ type Generador struct {
 	All_Func *arrayList.List
 	isFunc   bool
 
-	isNot bool
+	isNot   bool
+	isLogic bool
+
+	isBreak    *arrayList.List
+	isContinue *arrayList.List
 }
 
 func NewGene() *Generador {
 	gene := Generador{
-		Temporal: 0,
-		Label:    0,
-		Code:     arrayList.New(),
-		TempList: arrayList.New(),
-		All_Func: arrayList.New(),
-		isFunc:   false,
-		isNot:    false,
+		Temporal:   0,
+		Label:      0,
+		Code:       arrayList.New(),
+		TempList:   arrayList.New(),
+		All_Func:   arrayList.New(),
+		isFunc:     false,
+		isNot:      false,
+		isLogic:    false,
+		isBreak:    arrayList.New(),
+		isContinue: arrayList.New(),
 	}
 	return &gene
 }
@@ -65,6 +72,35 @@ func (g *Generador) SetNotTrue() {
 }
 func (g *Generador) SetNotFalse() {
 	g.isNot = false
+}
+
+func (g *Generador) SetLogicTrue() {
+	g.isLogic = true
+}
+
+func (g *Generador) SetLogicFalse() {
+	g.isLogic = false
+}
+
+func (g *Generador) GetLastBreak() string {
+
+	if g.isBreak.Len() != 0 {
+		return g.isBreak.GetValue(g.isBreak.Len() - 1).(string)
+	} else {
+		return ""
+	}
+}
+
+func (g *Generador) AddBreakList(label string) {
+	g.isBreak.Add(label)
+}
+
+func (g *Generador) QuitLastBreak() {
+	g.isBreak.RemoveAtIndex(g.isBreak.Len() - 1)
+}
+
+func (g *Generador) GetIsLogic() bool {
+	return g.isLogic
 }
 
 func (g *Generador) NewLabel() string {
@@ -129,6 +165,7 @@ func (g *Generador) AddImprimirString() {
 	g.Ini_func("void", "print_string")
 	labelsito := g.NewLabel()
 	labelsito2 := g.NewLabel()
+	labelsito3 := g.NewLabel()
 
 	temporalin := g.NewTemp()
 	temporalin2 := g.NewTemp()
@@ -139,13 +176,14 @@ func (g *Generador) AddImprimirString() {
 	temporalin3 := g.NewTemp()
 
 	g.AddExpression(temporalin3, "HEAP[(int)"+temporalin2+"]", "", "")
-	g.AddIf(temporalin, "-1", "==", labelsito2)
+	g.AddIf(temporalin3, "-1", "!=", labelsito2)
+	g.AddGoTo(labelsito3)
+	g.AddLabel(labelsito2)
 	g.AddPrint("c", "(int)"+temporalin3)
-
 	g.AddExpression(temporalin2, temporalin2, "1", "+")
 	g.AddGoTo(labelsito)
-	g.AddLabel(labelsito2)
-	g.Code.Add("return; \n}")
+	g.AddLabel(labelsito3)
+	g.Finish_func()
 
 }
 
@@ -184,6 +222,16 @@ func (g *Generador) Func_Nat_Print_MathError() {
 	g.AddPrint("c", "(int)114")
 	g.AddPrint("c", "(int)111")
 	g.AddPrint("c", "(int)114")
+	g.AddPrint("c", "(int)10")
+	g.Finish_func()
+}
+
+func (g *Generador) Func_Nat_Print_Null() {
+	g.Ini_func("void", "Native_Print_Null")
+	g.AddPrint("c", "(int)78")
+	g.AddPrint("c", "(int)117")
+	g.AddPrint("c", "(int)108")
+	g.AddPrint("c", "(int)108")
 	g.AddPrint("c", "(int)10")
 	g.Finish_func()
 }

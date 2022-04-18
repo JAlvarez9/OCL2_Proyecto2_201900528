@@ -6,7 +6,6 @@ import (
 	p_Generador "LAB1/Clases/Generador"
 	p_Enviroment "LAB1/Clases/enviroment"
 	p_Interface "LAB1/Clases/interfaces"
-	"strconv"
 )
 
 type Logica struct {
@@ -34,7 +33,15 @@ func (p Logica) Ejecutar(controlador *p_Controlador.Controlador2, generador *p_G
 		{
 			finalLabel := generador.NewLabel()
 			retornoIzq = p.Op1.Ejecutar(controlador, generador, env, env_uni)
-
+			if retornoIzq.Type != p_Interface.BOOLEAN {
+				return p_Interface.Value{
+					Valor:      "",
+					IsTemp:     false,
+					Type:       p_Interface.NULL,
+					TrueLabel:  "",
+					FalseLabel: "",
+				}
+			}
 			if retornoIzq.Valor == "true" {
 				generador.AddGoTo(retornoIzq.TrueLabel)
 			} else if retornoIzq.Valor == "false" {
@@ -42,86 +49,102 @@ func (p Logica) Ejecutar(controlador *p_Controlador.Controlador2, generador *p_G
 			}
 			generador.AddLabel(retornoIzq.TrueLabel)
 			retornoDer = p.Op2.Ejecutar(controlador, generador, env, env_uni)
-			if retornoDer.Valor == "true" {
-				generador.AddGoTo(retornoDer.TrueLabel)
-			} else if retornoDer.Valor == "false" {
-				generador.AddGoTo(retornoDer.FalseLabel)
-			}
-			generador.AddLabel(retornoDer.TrueLabel)
-			generador.Bring_Func("Native_Print_True")
-			generador.AddGoTo(finalLabel)
-			generador.AddLabel(retornoIzq.FalseLabel)
-			generador.AddLabel(retornoDer.FalseLabel)
-			generador.Bring_Func("Native_Print_False")
-			generador.AddLabel(finalLabel)
-			trueLabel := generador.NewLabel()
-			falseLabel := generador.NewLabel()
-			return p_Interface.Value{
-				Valor:      "",
-				IsTemp:     false,
-				Type:       p_Interface.NULL,
-				TrueLabel:  trueLabel,
-				FalseLabel: falseLabel,
-			}
-
-		}
-	case "||":
-		{
-			retornoDer = p.Op2.Ejecutar(controlador, generador, env, env_uni)
-			retornoIzq = p.Op1.Ejecutar(controlador, generador, env, env_uni)
-			if retornoIzq.Type == p_Interface.BOOLEAN && retornoDer.Type == p_Interface.BOOLEAN {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
-				sup1, _ := strconv.ParseBool(retornoIzq.Valor)
-				sup2, _ := strconv.ParseBool(retornoDer.Valor)
-
-				if sup1 || sup2 {
-					generador.AddGoTo(trueLabel)
-
-				} else {
-					generador.AddGoTo(falseLabel)
-
-				}
+			if retornoDer.Type != p_Interface.BOOLEAN {
 				return p_Interface.Value{
 					Valor:      "",
 					IsTemp:     false,
-					Type:       p_Interface.BOOLEAN,
-					TrueLabel:  trueLabel,
-					FalseLabel: falseLabel,
-				}
-			} else {
-				var err = p_Errores.NewError("No se puede operara en la operacion relacional", env.(p_Enviroment.Enviroment).HaveFatha(), p.Line, p.Column)
-				controlador.Errores.Add(err)
-				controlador.Agregar_Consola("No se puede operar en la operacion relacional " + retornoIzq.Valor + " y " + retornoDer.Valor)
-				return p_Interface.Value{
-					Valor:      "",
-					IsTemp:     true,
 					Type:       p_Interface.NULL,
 					TrueLabel:  "",
 					FalseLabel: "",
 				}
 			}
+			if retornoDer.Valor == "true" {
+				generador.AddGoTo(retornoDer.TrueLabel)
+			} else if retornoDer.Valor == "false" {
+				generador.AddGoTo(retornoDer.FalseLabel)
+			}
+
+			generador.AddLabel(retornoIzq.FalseLabel)
+			generador.AddLabel(retornoDer.FalseLabel)
+			generador.AddGoTo(finalLabel)
+			return p_Interface.Value{
+				Valor:      "",
+				IsTemp:     false,
+				Type:       p_Interface.BOOLEAN,
+				TrueLabel:  retornoDer.TrueLabel,
+				FalseLabel: finalLabel,
+			}
+
+		}
+	case "||":
+		{
+			finalLabel := generador.NewLabel()
+			retornoIzq = p.Op1.Ejecutar(controlador, generador, env, env_uni)
+			if retornoIzq.Type != p_Interface.BOOLEAN {
+				return p_Interface.Value{
+					Valor:      "",
+					IsTemp:     false,
+					Type:       p_Interface.NULL,
+					TrueLabel:  "",
+					FalseLabel: "",
+				}
+			}
+			if retornoIzq.Valor == "true" {
+				generador.AddGoTo(retornoIzq.TrueLabel)
+			} else if retornoIzq.Valor == "false" {
+				generador.AddGoTo(retornoIzq.FalseLabel)
+			}
+			generador.AddLabel(retornoIzq.FalseLabel)
+			retornoDer = p.Op2.Ejecutar(controlador, generador, env, env_uni)
+			if retornoDer.Type != p_Interface.BOOLEAN {
+				return p_Interface.Value{
+					Valor:      "",
+					IsTemp:     false,
+					Type:       p_Interface.NULL,
+					TrueLabel:  "",
+					FalseLabel: "",
+				}
+			}
+			if retornoDer.Valor == "true" {
+				generador.AddGoTo(retornoDer.TrueLabel)
+			} else if retornoDer.Valor == "false" {
+				generador.AddGoTo(retornoDer.FalseLabel)
+			}
+			generador.AddLabel(retornoIzq.TrueLabel)
+			generador.AddLabel(retornoDer.TrueLabel)
+			generador.AddGoTo(finalLabel)
+
+			return p_Interface.Value{
+				Valor:      "",
+				IsTemp:     false,
+				Type:       p_Interface.BOOLEAN,
+				TrueLabel:  finalLabel,
+				FalseLabel: retornoDer.FalseLabel,
+			}
+
 		}
 	case "!":
 		{
 
 			retornoIzq = p.Op1.Ejecutar(controlador, generador, env, env_uni)
 			if retornoIzq.Type == p_Interface.BOOLEAN {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
-				sup1, _ := strconv.ParseBool(retornoIzq.Valor)
+
+				sup := retornoIzq.TrueLabel
+				sup1 := retornoIzq.FalseLabel
+				if retornoIzq.Valor == "true" {
+					retornoIzq.Valor = "false"
+				} else if retornoIzq.Valor == "false" {
+					retornoIzq.Valor = "true"
+				}
+				retornoIzq.TrueLabel = sup1
+				retornoIzq.FalseLabel = sup
+				/*sup1, _ := strconv.ParseBool(retornoIzq.Valor)
 				if sup1 {
 					generador.AddGoTo(falseLabel)
 				} else {
 					generador.AddGoTo(trueLabel)
-				}
-				return p_Interface.Value{
-					Valor:      "",
-					IsTemp:     false,
-					Type:       p_Interface.BOOLEAN,
-					TrueLabel:  retornoIzq.TrueLabel,
-					FalseLabel: retornoIzq.FalseLabel,
-				}
+				}*/
+				return retornoIzq
 			} else {
 				var err = p_Errores.NewError("No se puede operara en la NOT", env.(p_Enviroment.Enviroment).HaveFatha(), p.Line, p.Column)
 				controlador.Errores.Add(err)

@@ -161,6 +161,8 @@ func (this *TreeShapeListener) ExitStart(ctx *parser.StartContext) {
 	generador.Func_Nat_Print_True()
 	generador.Func_Nat_Print_False()
 	generador.Func_Nat_Print_MathError()
+	generador.Func_Nat_Print_Null()
+	generador.AddImprimirString()
 
 	salida += "#include <stdio.h>\n"
 	salida += "#include <math.h>\n"

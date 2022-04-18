@@ -1,4 +1,4 @@
-// Generated from d:\Compi 2\Proyecto2\Lab1\Interprete_lex.g4 by ANTLR 4.8
+// Generated from d:\Github\OCL2_Proyecto2_201900528\Lab1\Interprete_lex.g4 by ANTLR 4.8
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;

@@ -48,15 +48,14 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 			FalseLabel: "",
 		}
 	}
+	trueLabel := generador.NewLabel()
+	falseLabel := generador.NewLabel()
 	//sup3 := ""
 	switch p.Operador {
 	case "<":
 		{
 			//dominante = logic_dominante[retornoIzq.Type][retornoDer.Type]
 			if retornoIzq.Type == p_Interface.INTEGER && retornoDer.Type == p_Interface.INTEGER {
-
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -68,8 +67,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					FalseLabel: falseLabel,
 				}
 			} else if retornoIzq.Type == p_Interface.FLOAT && retornoDer.Type == p_Interface.FLOAT {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -82,8 +79,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.STR && retornoDer.Type == p_Interface.STR {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -96,8 +91,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.STR && retornoDer.Type == p_Interface.STRING {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -110,8 +103,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.STRING && retornoDer.Type == p_Interface.STR {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -124,8 +115,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.STRING && retornoDer.Type == p_Interface.STRING {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -138,8 +127,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.USIZE && retornoDer.Type == p_Interface.USIZE {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -152,8 +139,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.USIZE && retornoDer.Type == p_Interface.INTEGER {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -166,8 +151,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.INTEGER && retornoDer.Type == p_Interface.USIZE {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -198,9 +181,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 			//dominante = logic_dominante[retornoIzq.Type][retornoDer.Type]
 			if retornoIzq.Type == p_Interface.INTEGER && retornoDer.Type == p_Interface.INTEGER {
 
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
-
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
@@ -211,8 +191,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					FalseLabel: falseLabel,
 				}
 			} else if retornoIzq.Type == p_Interface.FLOAT && retornoDer.Type == p_Interface.FLOAT {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -225,8 +203,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.STR && retornoDer.Type == p_Interface.STR {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -239,8 +215,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.STR && retornoDer.Type == p_Interface.STRING {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -253,8 +227,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.STRING && retornoDer.Type == p_Interface.STR {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -267,8 +239,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.STRING && retornoDer.Type == p_Interface.STRING {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -281,8 +251,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.USIZE && retornoDer.Type == p_Interface.USIZE {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -295,8 +263,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.USIZE && retornoDer.Type == p_Interface.INTEGER {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -309,8 +275,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.INTEGER && retornoDer.Type == p_Interface.USIZE {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -341,9 +305,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 			//dominante = logic_dominante[retornoIzq.Type][retornoDer.Type]
 			if retornoIzq.Type == p_Interface.INTEGER && retornoDer.Type == p_Interface.INTEGER {
 
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
-
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
@@ -354,8 +315,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					FalseLabel: falseLabel,
 				}
 			} else if retornoIzq.Type == p_Interface.FLOAT && retornoDer.Type == p_Interface.FLOAT {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -368,8 +327,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.STR && retornoDer.Type == p_Interface.STR {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -382,8 +339,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.STR && retornoDer.Type == p_Interface.STRING {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -396,8 +351,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.STRING && retornoDer.Type == p_Interface.STR {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -410,8 +363,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.STRING && retornoDer.Type == p_Interface.STRING {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -424,8 +375,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.USIZE && retornoDer.Type == p_Interface.USIZE {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -438,8 +387,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.USIZE && retornoDer.Type == p_Interface.INTEGER {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -452,8 +399,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.INTEGER && retornoDer.Type == p_Interface.USIZE {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -484,9 +429,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 			//dominante = logic_dominante[retornoIzq.Type][retornoDer.Type]
 			if retornoIzq.Type == p_Interface.INTEGER && retornoDer.Type == p_Interface.INTEGER {
 
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
-
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
@@ -497,8 +439,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					FalseLabel: falseLabel,
 				}
 			} else if retornoIzq.Type == p_Interface.FLOAT && retornoDer.Type == p_Interface.FLOAT {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -511,8 +451,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.STR && retornoDer.Type == p_Interface.STR {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -525,8 +463,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.STR && retornoDer.Type == p_Interface.STRING {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -539,8 +475,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.STRING && retornoDer.Type == p_Interface.STR {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -553,8 +487,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.STRING && retornoDer.Type == p_Interface.STRING {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -567,8 +499,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.USIZE && retornoDer.Type == p_Interface.USIZE {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -581,8 +511,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.USIZE && retornoDer.Type == p_Interface.INTEGER {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -595,8 +523,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.INTEGER && retornoDer.Type == p_Interface.USIZE {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -627,9 +553,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 			//dominante = logic_dominante[retornoIzq.Type][retornoDer.Type]
 			if retornoIzq.Type == p_Interface.INTEGER && retornoDer.Type == p_Interface.INTEGER {
 
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
-
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
@@ -640,8 +563,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					FalseLabel: falseLabel,
 				}
 			} else if retornoIzq.Type == p_Interface.FLOAT && retornoDer.Type == p_Interface.FLOAT {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -654,8 +575,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.STR && retornoDer.Type == p_Interface.STR {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -668,8 +587,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.STR && retornoDer.Type == p_Interface.STRING {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -682,8 +599,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.STRING && retornoDer.Type == p_Interface.STR {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -696,8 +611,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.STRING && retornoDer.Type == p_Interface.STRING {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -710,8 +623,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.USIZE && retornoDer.Type == p_Interface.USIZE {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -724,8 +635,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.USIZE && retornoDer.Type == p_Interface.INTEGER {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -738,8 +647,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.INTEGER && retornoDer.Type == p_Interface.USIZE {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -770,9 +677,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 			//dominante = logic_dominante[retornoIzq.Type][retornoDer.Type]
 			if retornoIzq.Type == p_Interface.INTEGER && retornoDer.Type == p_Interface.INTEGER {
 
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
-
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
 				return p_Interface.Value{
@@ -783,8 +687,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					FalseLabel: falseLabel,
 				}
 			} else if retornoIzq.Type == p_Interface.FLOAT && retornoDer.Type == p_Interface.FLOAT {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -797,8 +699,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.STR && retornoDer.Type == p_Interface.STR {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -811,8 +711,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.STR && retornoDer.Type == p_Interface.STRING {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -825,8 +723,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.STRING && retornoDer.Type == p_Interface.STR {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -839,8 +735,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.STRING && retornoDer.Type == p_Interface.STRING {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -853,8 +747,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.USIZE && retornoDer.Type == p_Interface.USIZE {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -867,8 +759,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.USIZE && retornoDer.Type == p_Interface.INTEGER {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -881,8 +771,6 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.INTEGER && retornoDer.Type == p_Interface.USIZE {
-				trueLabel := generador.NewLabel()
-				falseLabel := generador.NewLabel()
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)

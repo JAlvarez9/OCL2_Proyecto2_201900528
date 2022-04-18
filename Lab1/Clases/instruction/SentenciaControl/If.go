@@ -29,5 +29,27 @@ func NewIf(condition p_Interfaces.Expresion, bloque_if *arrayList.List, bloque_e
 
 func (p If) Ejecutar(controlador *p_Controlador.Controlador2, generador *p_Generador.Generador, env interface{}, env_uni interface{}) p_Interfaces.Value {
 	var result p_Interfaces.Value
+
+	generador.AddComent("INICIO IF")
+	finalLabel := generador.NewLabel()
+	result = p.Expresion.Ejecutar(controlador, generador, env, env_uni)
+	if result.Valor == "true" {
+		generador.AddGoTo(result.TrueLabel)
+	} else if result.Valor == "false" {
+		generador.AddGoTo(result.FalseLabel)
+	}
+	generador.AddLabel(result.TrueLabel)
+	for _, s := range p.Bloque_if.ToArray() {
+		s.(p_Interfaces.Expresion).Ejecutar(controlador, generador, env, env_uni)
+
+	}
+	generador.AddGoTo(finalLabel)
+	generador.AddLabel(result.FalseLabel)
+	for _, s := range p.Bloque_else.ToArray() {
+		s.(p_Interfaces.Expresion).Ejecutar(controlador, generador, env, env_uni)
+
+	}
+	generador.AddLabel(finalLabel)
+	generador.AddComent("FINAL IF")
 	return result
 }

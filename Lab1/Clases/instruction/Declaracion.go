@@ -32,6 +32,7 @@ func NewDeclaration(id string, tipo p_Interface.TipoExpresion, val p_Interface.E
 
 func (p Declaration) Ejecutar(controlador *p_Controlador.Controlador2, generador *p_Generador.Generador, env interface{}, env_uni interface{}) p_Interface.Value {
 	var result p_Interface.Value
+	generador.AddComent("INICIO DECLARACION")
 	result = p.Expresion.Ejecutar(controlador, generador, env, env_uni)
 	newSym := p_Interface.Symbol{
 		Id:       p.Id,
@@ -44,6 +45,7 @@ func (p Declaration) Ejecutar(controlador *p_Controlador.Controlador2, generador
 		Posicion: env.(p_Enviroment.Enviroment).GetSize(),
 	}
 	env.(p_Enviroment.Enviroment).SaveVarible(controlador, p.Id, newSym, p.Tipo, p.IsMut, newSym.Ambito, p_Interface.NEUTRAL, p.Line, p.Columna)
+	env_uni.(p_Enviroment.Enviroment).SaveVarible_Uni(controlador, p.Id, newSym, p.Tipo, p.IsMut, newSym.Ambito, p.Line, p.Columna)
 
 	if result.Type == p_Interface.INTEGER || result.Type == p_Interface.FLOAT {
 		a := fmt.Sprintf("%v", newSym.Posicion)
@@ -70,5 +72,6 @@ func (p Declaration) Ejecutar(controlador *p_Controlador.Controlador2, generador
 		generador.AddStack(temporalin2, temporalin)
 
 	}
+	generador.AddComent("FINAL DECLARACION")
 	return result
 }

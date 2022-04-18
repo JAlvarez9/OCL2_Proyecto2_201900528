@@ -2,7 +2,7 @@
 //Code Mirror-----------------------------------------
 
 var editor = CodeMirror.fromTextArea(document.getElementById('editor'),{
-    mode: "xml",
+    mode: "text/x-csrc",
     lineNumbers: true,
     theme: "blackboard"
     
@@ -10,7 +10,7 @@ var editor = CodeMirror.fromTextArea(document.getElementById('editor'),{
 editor.setSize(600,700)
 
 var editor2 = CodeMirror.fromTextArea(document.getElementById('editor2'),{
-    mode: "xml",
+    mode: "text/x-csrc",
     lineNumbers: true,
     theme: "blackboard"
     

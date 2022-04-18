@@ -3,8 +3,10 @@ package instruction
 import (
 	p_Controlador "LAB1/Clases/Controlador"
 	p_Generador "LAB1/Clases/Generador"
+	p_Enviroment "LAB1/Clases/enviroment"
 	p_Interface "LAB1/Clases/interfaces"
 	"fmt"
+	"strconv"
 
 	arrayList "github.com/colegno/arraylist"
 )
@@ -31,26 +33,35 @@ func (p Imprimir) Ejecutar(controlador *p_Controlador.Controlador2, generador *p
 	result = p.Expresion.Ejecutar(controlador, generador, env, env_uni)
 
 	if result.Simbolin.Valor != nil {
-		temporalin := generador.NewTemp()
-		a := fmt.Sprintf("%v", result.Simbolin.Posicion)
-		generador.AddExpression(temporalin, "P", a, "+")
-		temporalin2 := generador.NewTemp()
-		c := "STACK[(int)" + temporalin + "]"
-		generador.AddExpression(temporalin2, c, "", "")
 
 		switch result.Simbolin.Tipo {
 		case p_Interface.INTEGER:
-			b := "(int)" + temporalin2
+
+			b := "(int)" + result.Valor
 			generador.AddPrint("d", b)
 		case p_Interface.FLOAT:
-			b := "(float)" + temporalin2
+
+			b := "(float)" + result.Valor
 			generador.AddPrint("f", b)
 		case p_Interface.STR:
-			generador.AddImprimirString()
+			finalLabel := generador.NewLabel()
+			nullLabel := generador.NewLabel()
+			generador.AddIf(result.Valor, "-1", "==", nullLabel)
+			generador.AddExpression("P", "P", strconv.Itoa(env.(p_Enviroment.Enviroment).GetSize()), "+")
+			tempStack := generador.NewTemp()
+			generador.AddExpression(tempStack, "P", "1", "+")
+			generador.AddStack(tempStack, result.Valor)
 			generador.Bring_Func("print_string")
+			generador.AddExpression("P", "P", strconv.Itoa(env.(p_Enviroment.Enviroment).GetSize()), "-")
+			generador.AddGoTo(finalLabel)
+			generador.AddLabel(nullLabel)
+			generador.Bring_Func("Native_Print_Null")
+			generador.AddLabel(finalLabel)
 
 		}
 
+		generador.AddPrint("c", "(int)10")
+		generador.AddComent("Final Print")
 		return result
 	}
 
@@ -77,16 +88,33 @@ func (p Imprimir) Ejecutar(controlador *p_Controlador.Controlador2, generador *p
 	case p_Interface.STR:
 
 		runs := []rune(result.Valor)
-
+		finalLabel := generador.NewLabel()
 		var val_Ascci []int
 
 		for i := 0; i < len(runs); i++ {
 			val_Ascci = append(val_Ascci, int(runs[i]))
 		}
+		tempHeap := generador.NewTemp()
+		generador.AddExpression(tempHeap, "H", "", "")
 		for _, s := range val_Ascci {
-			generador.AddPrint("c", fmt.Sprintf("%v", s))
+			generador.AddHeap("H", fmt.Sprintf("%v", s))
+			generador.AddExpression("H", "H", "1", "+")
 		}
-		fmt.Println(val_Ascci)
+		generador.AddHeap("H", "-1")
+		generador.AddExpression("H", "H", "1", "+")
+		nullLabel := generador.NewLabel()
+		generador.AddIf(tempHeap, "-1", "==", nullLabel)
+		generador.AddExpression("P", "P", strconv.Itoa(env.(p_Enviroment.Enviroment).GetSize()), "+")
+		tempStack := generador.NewTemp()
+		generador.AddExpression(tempStack, "P", "1", "+")
+		generador.AddStack(tempStack, tempHeap)
+		generador.Bring_Func("print_string")
+		generador.AddExpression("P", "P", strconv.Itoa(env.(p_Enviroment.Enviroment).GetSize()), "-")
+		generador.AddGoTo(finalLabel)
+		generador.AddLabel(nullLabel)
+		generador.Bring_Func("Native_Print_Null")
+		generador.AddLabel(finalLabel)
+
 	case p_Interface.NULL:
 
 	}
