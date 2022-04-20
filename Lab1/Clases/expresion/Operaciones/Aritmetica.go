@@ -366,9 +366,28 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 			//dominante = resta_mul_pot_mod_dominante[retornoIzq.Type][retornoDer.Type]
 
 			if retornoIzq.Type == p_Interface.INTEGER && retornoDer.Type == p_Interface.INTEGER {
-				generador.AddExprePow(newTemp, retornoIzq.Valor, retornoDer.Valor, "^")
+				labelsito1 := generador.NewLabel()
+				labelsito2 := generador.NewLabel()
+				temporalin0 := generador.NewTemp()
+				temporalin1 := generador.NewTemp()
+				temporalin2 := generador.NewTemp()
+
+				generador.AddIf(retornoDer.Valor, "0", "==", labelsito1)
+				generador.AddExpression("P", "P", strconv.Itoa(env.(p_Enviroment.Enviroment).GetSize()), "+")
+				generador.AddExpression(temporalin1, "P", "1", "+")
+				generador.AddStack(temporalin1, retornoIzq.Valor)
+				generador.AddExpression(temporalin2, "P", "2", "+")
+				generador.AddStack(temporalin2, retornoDer.Valor)
+				generador.Bring_Func("Native_Pot_NumEnteros")
+				generador.AddExpression(temporalin0, "STACK[(int)P]", "", "")
+				generador.AddExpression("P", "P", strconv.Itoa(env.(p_Enviroment.Enviroment).GetSize()), "-")
+				generador.AddGoTo(labelsito2)
+				generador.AddLabel(labelsito1)
+				generador.AddExpression(temporalin0, "1", "", "")
+				generador.AddLabel(labelsito2)
+
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      temporalin0,
 					IsTemp:     true,
 					Type:       p_Interface.INTEGER,
 					TrueLabel:  "",
@@ -392,9 +411,27 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 			//dominante = resta_mul_pot_mod_dominante[retornoIzq.Type][retornoDer.Type]
 
 			if retornoIzq.Type == p_Interface.FLOAT && retornoDer.Type == p_Interface.FLOAT {
-				generador.AddExprePow(newTemp, retornoIzq.Valor, retornoDer.Valor, "^")
+				labelsito1 := generador.NewLabel()
+				labelsito2 := generador.NewLabel()
+				temporalin0 := generador.NewTemp()
+				temporalin1 := generador.NewTemp()
+				temporalin2 := generador.NewTemp()
+
+				generador.AddIf(retornoDer.Valor, "0", "==", labelsito1)
+				generador.AddExpression("P", "P", strconv.Itoa(env.(p_Enviroment.Enviroment).GetSize()), "+")
+				generador.AddExpression(temporalin1, "P", "1", "+")
+				generador.AddStack(temporalin1, retornoIzq.Valor)
+				generador.AddExpression(temporalin2, "P", "2", "+")
+				generador.AddStack(temporalin2, retornoDer.Valor)
+				generador.Bring_Func("Native_Pot_NumEnteros")
+				generador.AddExpression(temporalin0, "STACK[(int)P]", "", "")
+				generador.AddExpression("P", "P", strconv.Itoa(env.(p_Enviroment.Enviroment).GetSize()), "-")
+				generador.AddGoTo(labelsito2)
+				generador.AddLabel(labelsito1)
+				generador.AddExpression(temporalin0, "1", "", "")
+				generador.AddLabel(labelsito2)
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      temporalin0,
 					IsTemp:     true,
 					Type:       p_Interface.FLOAT,
 					TrueLabel:  "",

@@ -54,33 +54,42 @@ func (p ForIn) Ejecutar(controlador *p_Controlador.Controlador2, generador *p_Ge
 		temporalin2 := generador.NewTemp()
 		generador.AddExpression(temporalin2, "P", b, "+")
 		generador.AddStack(temporalin2, inicio.Valor)
-
 		env.(p_Enviroment.Enviroment).SaveVarible(controlador, p.Id_Variable, newSym, inicio.Type, true, newSym.Ambito, p_Interface.NEUTRAL, p.Linea, p.Columna)
 		initialLabel := generador.NewLabel()
 		finalLabel := generador.NewLabel()
 		trueLabel := generador.NewLabel()
 		tempIf := generador.NewTemp()
-
+		LabelJustPlus := generador.NewLabel()
+		generador.AddBreakList(finalLabel)
+		generador.AddContinueList(LabelJustPlus)
 		generador.AddLabel(initialLabel)
 		generador.AddExpression(tempIf, "STACK[(int)"+strconv.Itoa(newSym.Posicion)+"]", "", "")
 		generador.AddIf(tempIf, final.Valor, "<", trueLabel)
 		generador.AddGoTo(finalLabel)
-		tmpEnv2 := p_Enviroment.NewEnviroment(env)
+
 		generador.AddLabel(trueLabel)
 		for _, s := range p.Bloque_ForIn.ToArray() {
-			s.(p_Interface.Instruction).Ejecutar(controlador, generador, tmpEnv2, env_uni)
-
+			s.(p_Interface.Instruction).Ejecutar(controlador, generador, env, env_uni)
 		}
 		temporalin := generador.NewTemp()
-		a := fmt.Sprintf("%v", inicio.Simbolin.Posicion)
+		//a := fmt.Sprintf("%v", inicio.Simbolin.Posicion)
+		supp := env.(p_Enviroment.Enviroment).GetVariable(controlador, p.Id_Variable, p.Linea, p.Columna)
 		temp2 := generador.NewTemp()
-		generador.AddExpression(temporalin, "P", a, "+")
+		generador.AddExpression(temporalin, "P", strconv.Itoa(supp.Posicion), "+")
 		generador.AddExpression(temp2, "STACK[(int)"+temporalin+"]", "", "")
 		generador.AddStack(temporalin, temp2+"+ 1")
 		generador.AddGoTo(initialLabel)
-
+		generador.AddLabel(LabelJustPlus)
+		tempJustPlus := generador.NewTemp()
+		//aa := fmt.Sprintf("%v", inicio.Simbolin.Posicion)
+		temp3 := generador.NewTemp()
+		generador.AddExpression(tempJustPlus, "P", strconv.Itoa(supp.Posicion), "+")
+		generador.AddExpression(temp3, "STACK[(int)"+tempJustPlus+"]", "", "")
+		generador.AddStack(tempJustPlus, temp3+"+ 1")
+		generador.AddGoTo(initialLabel)
 		generador.AddLabel(finalLabel)
-
+		generador.QuitLastBreak()
+		generador.QuitLastContinue()
 	}
 	generador.AddComent("FIN FOR IN")
 	return result

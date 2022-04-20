@@ -24,6 +24,9 @@ type Value struct {
 	TrueLabel  string
 	FalseLabel string
 
+	IsP  bool
+	IsCV bool
+
 	Simbolin Symbol
 }
 

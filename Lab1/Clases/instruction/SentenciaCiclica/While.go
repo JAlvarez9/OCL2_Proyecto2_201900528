@@ -33,13 +33,21 @@ func (p While) Ejecutar(controlador *p_Controlador.Controlador2, generador *p_Ge
 	generador.AddLabel(initialLabel)
 	result = p.Expresion.Ejecutar(controlador, generador, env, env_uni)
 	generador.AddBreakList(result.FalseLabel)
+	generador.AddContinueList(initialLabel)
 	generador.AddLabel(result.TrueLabel)
+	if result.IsCV == true && result.Type == p_Interfaces.BOOLEAN {
+
+		generador.AddIf(result.Valor, "1", "==", result.TrueLabel)
+		generador.AddGoTo(result.FalseLabel)
+
+	}
 	for _, s := range p.Bloque_While.ToArray() {
 		s.(p_Interfaces.Expresion).Ejecutar(controlador, generador, env, env_uni)
 	}
 	generador.AddGoTo(initialLabel)
 	generador.AddLabel(result.FalseLabel)
 	generador.QuitLastBreak()
+	generador.QuitLastContinue()
 	generador.AddComent("FINAL WHILE")
 	return result
 }

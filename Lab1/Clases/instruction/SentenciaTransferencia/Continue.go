@@ -20,6 +20,16 @@ func NewContinue(line int, colu int) Continue {
 }
 
 func (p Continue) Ejecutar(controlador *p_Controlador.Controlador2, generador *p_Generador.Generador, env interface{}, env_uni interface{}) p_Interfaces.Value {
-	var result p_Interfaces.Value
+	var result p_Interfaces.Value = p_Interfaces.Value{
+		Valor:      "",
+		IsTemp:     true,
+		Type:       p_Interfaces.CONTINUE,
+		TrueLabel:  "",
+		FalseLabel: "",
+	}
+
+	generador.AddComent("INICIO CONTINUE")
+	generador.AddGoTo(generador.GetLastContinue())
+	generador.AddComent("FIN CONTINUE")
 	return result
 }

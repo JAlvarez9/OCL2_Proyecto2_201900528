@@ -47,29 +47,79 @@ func (p Declaration) Ejecutar(controlador *p_Controlador.Controlador2, generador
 	env.(p_Enviroment.Enviroment).SaveVarible(controlador, p.Id, newSym, p.Tipo, p.IsMut, newSym.Ambito, p_Interface.NEUTRAL, p.Line, p.Columna)
 	env_uni.(p_Enviroment.Enviroment).SaveVarible_Uni(controlador, p.Id, newSym, p.Tipo, p.IsMut, newSym.Ambito, p.Line, p.Columna)
 
-	if result.Type == p_Interface.INTEGER || result.Type == p_Interface.FLOAT {
+	if result.Type == p_Interface.INTEGER || result.Type == p_Interface.FLOAT || result.Type == p_Interface.USIZE {
 		a := fmt.Sprintf("%v", newSym.Posicion)
 		temporalin := generador.NewTemp()
 		generador.AddExpression(temporalin, "P", a, "+")
 		generador.AddStack(temporalin, result.Valor)
 	} else if result.Type == p_Interface.STR || result.Type == p_Interface.STRING {
-		runas := []rune(result.Valor)
-		var ascii []int
 
-		for i := 0; i < len(runas); i++ {
-			ascii = append(ascii, int(runas[i]))
-		}
-		temporalin := generador.NewTemp()
-		generador.AddExpression(temporalin, "H", "", "")
-		for i := 0; i < len(ascii); i++ {
-			generador.AddHeap("H", strconv.Itoa(ascii[i]))
+		if !result.IsP {
+			temporalin2 := generador.NewTemp()
+			generador.AddExpression(temporalin2, "P", strconv.Itoa(newSym.Posicion), "+")
+			generador.AddStack(temporalin2, result.Valor)
+		} else {
+
+			runas := []rune(result.Valor)
+			var ascii []int
+
+			for i := 0; i < len(runas); i++ {
+				ascii = append(ascii, int(runas[i]))
+			}
+			temporalin := generador.NewTemp()
+			generador.AddExpression(temporalin, "H", "", "")
+			for i := 0; i < len(ascii); i++ {
+				generador.AddHeap("H", strconv.Itoa(ascii[i]))
+				generador.AddExpression("H", "H", "1", "+")
+			}
+			generador.AddHeap("H", "-1")
 			generador.AddExpression("H", "H", "1", "+")
+			temporalin2 := generador.NewTemp()
+			generador.AddExpression(temporalin2, "P", strconv.Itoa(newSym.Posicion), "+")
+			generador.AddStack(temporalin2, temporalin)
 		}
-		generador.AddHeap("H", "-1")
-		generador.AddExpression("H", "H", "1", "+")
-		temporalin2 := generador.NewTemp()
-		generador.AddExpression(temporalin2, "P", strconv.Itoa(newSym.Posicion), "+")
-		generador.AddStack(temporalin2, temporalin)
+
+	} else if result.Type == p_Interface.BOOLEAN {
+		// TENGO QUE HACER QUE GUARDE UN BOOLEAN
+		if result.IsP {
+			if result.Valor == "true" {
+				a := fmt.Sprintf("%v", newSym.Posicion)
+				temporalin := generador.NewTemp()
+				generador.AddExpression(temporalin, "P", a, "+")
+				generador.AddStack(temporalin, "1")
+			} else if result.Valor == "false" {
+				a := fmt.Sprintf("%v", newSym.Posicion)
+				temporalin := generador.NewTemp()
+				generador.AddExpression(temporalin, "P", a, "+")
+				generador.AddStack(temporalin, "0")
+			}
+		} else {
+			a := fmt.Sprintf("%v", newSym.Posicion)
+			temporalin := generador.NewTemp()
+			generador.AddExpression(temporalin, "P", a, "+")
+			generador.AddStack(temporalin, result.Valor)
+		}
+
+	} else if result.Type == p_Interface.CHAR {
+
+		if !result.IsP {
+			temporalin2 := generador.NewTemp()
+			generador.AddExpression(temporalin2, "P", strconv.Itoa(newSym.Posicion), "+")
+			generador.AddStack(temporalin2, result.Valor)
+		} else {
+
+			runas := []rune(result.Valor)
+			var ascii []int
+
+			for i := 0; i < len(runas); i++ {
+				ascii = append(ascii, int(runas[i]))
+			}
+
+			a := fmt.Sprintf("%v", newSym.Posicion)
+			temporalin := generador.NewTemp()
+			generador.AddExpression(temporalin, "P", a, "+")
+			generador.AddStack(temporalin, strconv.Itoa(ascii[0]))
+		}
 
 	}
 	generador.AddComent("FINAL DECLARACION")

@@ -38,6 +38,14 @@ func (p If) Ejecutar(controlador *p_Controlador.Controlador2, generador *p_Gener
 	} else if result.Valor == "false" {
 		generador.AddGoTo(result.FalseLabel)
 	}
+
+	if result.IsCV == true && result.Type == p_Interfaces.BOOLEAN {
+
+		generador.AddIf(result.Valor, "1", "==", result.TrueLabel)
+		generador.AddGoTo(result.FalseLabel)
+
+	}
+
 	generador.AddLabel(result.TrueLabel)
 	for _, s := range p.Bloque_if.ToArray() {
 		s.(p_Interfaces.Expresion).Ejecutar(controlador, generador, env, env_uni)

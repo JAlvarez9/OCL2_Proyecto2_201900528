@@ -24,9 +24,17 @@ func (p CallVariable) Ejecutar(controlador *p_Controlador.Controlador2, generado
 	generador.AddComent("INICIO CALL VARIABLE")
 	sup := env.(p_Enviroment.Enviroment).GetVariable(controlador, p.Id, p.Line, p.Columna)
 	result.Simbolin = sup
+	result.Type = sup.Tipo
 	sup2 := generador.NewTemp()
 	generador.AddExpression(sup2, "STACK[(int)"+strconv.Itoa(result.Simbolin.Posicion)+"]", "", "")
+	if result.Type == p_Interface.BOOLEAN {
+		truel := generador.NewLabel()
+		falsel := generador.NewLabel()
+		result.TrueLabel = truel
+		result.FalseLabel = falsel
+	}
 	result.Valor = sup2
+	result.IsCV = true
 	generador.AddComent("FIN CALL VARIABLE")
 	return result
 }
