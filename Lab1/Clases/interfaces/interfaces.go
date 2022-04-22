@@ -27,6 +27,10 @@ type Value struct {
 	IsP  bool
 	IsCV bool
 
+	IsLog        bool
+	IsRelacional bool
+	IsArit       bool
+
 	Simbolin Symbol
 }
 

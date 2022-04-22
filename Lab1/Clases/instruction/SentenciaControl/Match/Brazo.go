@@ -27,5 +27,10 @@ func NewBrazo(exp *arrayList.List, bloque *arrayList.List, line int, colum int) 
 
 func (p Brazo) Ejecutar(controlador *p_Controlador.Controlador2, generador *p_Generador.Generador, env interface{}, env_uni interface{}) p_Interfaces.Value {
 	var result p_Interfaces.Value
+
+	for _, a := range p.Bloque_Brazo.ToArray() {
+		a.(p_Interfaces.Instruction).Ejecutar(controlador, generador, env, env_uni)
+	}
+
 	return result
 }

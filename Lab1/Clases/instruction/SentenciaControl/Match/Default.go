@@ -26,5 +26,8 @@ func NewDefault(bloque *arrayList.List, line int, columna int) Default {
 
 func (p Default) Ejecutar(controlador *p_Controlador.Controlador2, generador *p_Generador.Generador, env interface{}, env_uni interface{}) p_Interfaces.Value {
 	var result p_Interfaces.Value
+	for _, s := range p.Bloque_Default.ToArray() {
+		s.(p_Interfaces.Instruction).Ejecutar(controlador, generador, env, env_uni)
+	}
 	return result
 }

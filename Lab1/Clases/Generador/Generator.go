@@ -20,6 +20,8 @@ type Generador struct {
 
 	isBreak    *arrayList.List
 	isContinue *arrayList.List
+
+	ExpMatch interface{}
 }
 
 func NewGene() *Generador {

@@ -50,6 +50,7 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					Type:       p_Interface.INTEGER,
 					TrueLabel:  "",
 					FalseLabel: "",
+					IsArit:     true,
 				}
 
 			} else if retornoIzq.Type == p_Interface.FLOAT && retornoDer.Type == p_Interface.FLOAT {
@@ -60,6 +61,7 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					Type:       p_Interface.FLOAT,
 					TrueLabel:  "",
 					FalseLabel: "",
+					IsArit:     true,
 				}
 			} else if retornoIzq.Type == p_Interface.STR && retornoDer.Type == p_Interface.STR {
 				generador.AddExpression(newTemp, retornoIzq.Valor, retornoDer.Valor, "+")
@@ -69,6 +71,7 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					Type:       p_Interface.STR,
 					TrueLabel:  "",
 					FalseLabel: "",
+					IsArit:     true,
 				}
 
 			} else if retornoIzq.Type == p_Interface.STRING && retornoDer.Type == p_Interface.STRING {
@@ -79,6 +82,7 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					Type:       p_Interface.STRING,
 					TrueLabel:  "",
 					FalseLabel: "",
+					IsArit:     true,
 				}
 			} else if retornoIzq.Type == p_Interface.STR && retornoDer.Type == p_Interface.STRING {
 				generador.AddExpression(newTemp, retornoIzq.Valor, retornoDer.Valor, "+")
@@ -88,6 +92,7 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					Type:       p_Interface.STRING,
 					TrueLabel:  "",
 					FalseLabel: "",
+					IsArit:     true,
 				}
 			} else if retornoIzq.Type == p_Interface.STRING && retornoDer.Type == p_Interface.STR {
 				generador.AddExpression(newTemp, retornoIzq.Valor, retornoDer.Valor, "+")
@@ -97,6 +102,7 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					Type:       p_Interface.STRING,
 					TrueLabel:  "",
 					FalseLabel: "",
+					IsArit:     true,
 				}
 			} else if retornoIzq.Type == p_Interface.USIZE && retornoDer.Type == p_Interface.USIZE {
 				generador.AddExpression(newTemp, retornoIzq.Valor, retornoDer.Valor, "+")
@@ -106,6 +112,7 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					Type:       p_Interface.USIZE,
 					TrueLabel:  "",
 					FalseLabel: "",
+					IsArit:     true,
 				}
 			} else if retornoIzq.Type == p_Interface.USIZE && retornoDer.Type == p_Interface.INTEGER {
 				generador.AddExpression(newTemp, retornoIzq.Valor, retornoDer.Valor, "+")
@@ -115,6 +122,7 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					Type:       p_Interface.USIZE,
 					TrueLabel:  "",
 					FalseLabel: "",
+					IsArit:     true,
 				}
 			} else if retornoIzq.Type == p_Interface.INTEGER && retornoDer.Type == p_Interface.USIZE {
 				generador.AddExpression(newTemp, retornoIzq.Valor, retornoDer.Valor, "+")
@@ -124,6 +132,7 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					Type:       p_Interface.USIZE,
 					TrueLabel:  "",
 					FalseLabel: "",
+					IsArit:     true,
 				}
 			} else {
 
@@ -161,6 +170,7 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					Type:       p_Interface.INTEGER,
 					TrueLabel:  "",
 					FalseLabel: "",
+					IsArit:     true,
 				}
 			} else if retornoIzq.Type == p_Interface.FLOAT && retornoDer.Type == p_Interface.FLOAT {
 				generador.AddExpression(newTemp, retornoIzq.Valor, retornoDer.Valor, "-")
@@ -170,6 +180,7 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					Type:       p_Interface.FLOAT,
 					TrueLabel:  "",
 					FalseLabel: "",
+					IsArit:     true,
 				}
 			} else if retornoIzq.Type == p_Interface.USIZE && retornoDer.Type == p_Interface.USIZE {
 				generador.AddExpression(newTemp, retornoIzq.Valor, retornoDer.Valor, "-")
@@ -179,6 +190,7 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					Type:       p_Interface.USIZE,
 					TrueLabel:  "",
 					FalseLabel: "",
+					IsArit:     true,
 				}
 			} else if retornoIzq.Type == p_Interface.USIZE && retornoDer.Type == p_Interface.INTEGER {
 				generador.AddExpression(newTemp, retornoIzq.Valor, retornoDer.Valor, "-")
@@ -188,6 +200,7 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					Type:       p_Interface.USIZE,
 					TrueLabel:  "",
 					FalseLabel: "",
+					IsArit:     true,
 				}
 			} else if retornoIzq.Type == p_Interface.INTEGER && retornoDer.Type == p_Interface.USIZE {
 				generador.AddExpression(newTemp, retornoIzq.Valor, retornoDer.Valor, "-")
@@ -197,6 +210,7 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					Type:       p_Interface.USIZE,
 					TrueLabel:  "",
 					FalseLabel: "",
+					IsArit:     true,
 				}
 			} else {
 				var err = p_Errores.NewError("No se puede operara en la resta ", env.(p_Enviroment.Enviroment).HaveFatha(), p.Line, p.Column)
@@ -208,6 +222,7 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					Type:       p_Interface.NULL,
 					TrueLabel:  "",
 					FalseLabel: "",
+					IsArit:     true,
 				}
 			}
 		}
@@ -223,6 +238,7 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					Type:       p_Interface.INTEGER,
 					TrueLabel:  "",
 					FalseLabel: "",
+					IsArit:     true,
 				}
 			} else if retornoIzq.Type == p_Interface.FLOAT && retornoDer.Type == p_Interface.FLOAT {
 				generador.AddExpression(newTemp, retornoIzq.Valor, retornoDer.Valor, "*")
@@ -232,6 +248,7 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					Type:       p_Interface.FLOAT,
 					TrueLabel:  "",
 					FalseLabel: "",
+					IsArit:     true,
 				}
 			} else if retornoIzq.Type == p_Interface.USIZE && retornoDer.Type == p_Interface.USIZE {
 				generador.AddExpression(newTemp, retornoIzq.Valor, retornoDer.Valor, "*")
@@ -241,6 +258,7 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					Type:       p_Interface.USIZE,
 					TrueLabel:  "",
 					FalseLabel: "",
+					IsArit:     true,
 				}
 			} else if retornoIzq.Type == p_Interface.USIZE && retornoDer.Type == p_Interface.INTEGER {
 				generador.AddExpression(newTemp, retornoIzq.Valor, retornoDer.Valor, "*")
@@ -250,6 +268,7 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					Type:       p_Interface.USIZE,
 					TrueLabel:  "",
 					FalseLabel: "",
+					IsArit:     true,
 				}
 			} else if retornoIzq.Type == p_Interface.INTEGER && retornoDer.Type == p_Interface.USIZE {
 				generador.AddExpression(newTemp, retornoIzq.Valor, retornoDer.Valor, "*")
@@ -259,6 +278,7 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					Type:       p_Interface.USIZE,
 					TrueLabel:  "",
 					FalseLabel: "",
+					IsArit:     true,
 				}
 			} else {
 				var err = p_Errores.NewError("No se puede operara en la multiplicacion ", env.(p_Enviroment.Enviroment).HaveFatha(), p.Line, p.Column)
@@ -298,6 +318,7 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					Type:       p_Interface.INTEGER,
 					TrueLabel:  "",
 					FalseLabel: "",
+					IsArit:     true,
 				}
 			} else if retornoIzq.Type == p_Interface.FLOAT && retornoDer.Type == p_Interface.FLOAT {
 
@@ -310,6 +331,7 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 						Type:       p_Interface.NULL,
 						TrueLabel:  "",
 						FalseLabel: "",
+						IsArit:     true,
 					}
 				}
 
@@ -320,6 +342,7 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					Type:       p_Interface.FLOAT,
 					TrueLabel:  "",
 					FalseLabel: "",
+					IsArit:     true,
 				}
 			} else if retornoIzq.Type == p_Interface.USIZE && retornoDer.Type == p_Interface.USIZE {
 				generador.AddExpression(newTemp, retornoIzq.Valor, retornoDer.Valor, "/")
@@ -329,6 +352,7 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					Type:       p_Interface.USIZE,
 					TrueLabel:  "",
 					FalseLabel: "",
+					IsArit:     true,
 				}
 			} else if retornoIzq.Type == p_Interface.USIZE && retornoDer.Type == p_Interface.INTEGER {
 				generador.AddExpression(newTemp, retornoIzq.Valor, retornoDer.Valor, "/")
@@ -338,6 +362,7 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					Type:       p_Interface.USIZE,
 					TrueLabel:  "",
 					FalseLabel: "",
+					IsArit:     true,
 				}
 			} else if retornoIzq.Type == p_Interface.INTEGER && retornoDer.Type == p_Interface.USIZE {
 				generador.AddExpression(newTemp, retornoIzq.Valor, retornoDer.Valor, "/")
@@ -347,6 +372,7 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					Type:       p_Interface.USIZE,
 					TrueLabel:  "",
 					FalseLabel: "",
+					IsArit:     true,
 				}
 			} else {
 				var err = p_Errores.NewError("No se puede operara en la division ", env.(p_Enviroment.Enviroment).HaveFatha(), p.Line, p.Column)
@@ -358,6 +384,7 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					Type:       p_Interface.NULL,
 					TrueLabel:  "",
 					FalseLabel: "",
+					IsArit:     true,
 				}
 			}
 		}
@@ -392,6 +419,7 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					Type:       p_Interface.INTEGER,
 					TrueLabel:  "",
 					FalseLabel: "",
+					IsArit:     true,
 				}
 			} else {
 				var err = p_Errores.NewError("No se puede operara en la potencia ", env.(p_Enviroment.Enviroment).HaveFatha(), p.Line, p.Column)
@@ -403,6 +431,7 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					Type:       p_Interface.NULL,
 					TrueLabel:  "",
 					FalseLabel: "",
+					IsArit:     true,
 				}
 			}
 		}
@@ -436,6 +465,7 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					Type:       p_Interface.FLOAT,
 					TrueLabel:  "",
 					FalseLabel: "",
+					IsArit:     true,
 				}
 			} else {
 				var err = p_Errores.NewError("No se puede operara en la potencia ", env.(p_Enviroment.Enviroment).HaveFatha(), p.Line, p.Column)
@@ -447,6 +477,7 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					Type:       p_Interface.NULL,
 					TrueLabel:  "",
 					FalseLabel: "",
+					IsArit:     true,
 				}
 			}
 		}
@@ -462,6 +493,7 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					Type:       p_Interface.INTEGER,
 					TrueLabel:  "",
 					FalseLabel: "",
+					IsArit:     true,
 				}
 			} else if retornoIzq.Type == p_Interface.FLOAT && retornoDer.Type == p_Interface.FLOAT {
 				generador.AddExpression(newTemp, retornoIzq.Valor, retornoDer.Valor, "%")
@@ -471,6 +503,7 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					Type:       p_Interface.INTEGER,
 					TrueLabel:  "",
 					FalseLabel: "",
+					IsArit:     true,
 				}
 			} else {
 				var err = p_Errores.NewError("No se puede operara en la potencia ", env.(p_Enviroment.Enviroment).HaveFatha(), p.Line, p.Column)
@@ -482,6 +515,7 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					Type:       p_Interface.NULL,
 					TrueLabel:  "",
 					FalseLabel: "",
+					IsArit:     true,
 				}
 			}
 		}
