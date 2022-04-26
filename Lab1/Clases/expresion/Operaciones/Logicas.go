@@ -125,7 +125,7 @@ func (p Logica) Ejecutar(controlador *p_Controlador.Controlador2, generador *p_G
 		}
 	case "!":
 		{
-
+			generador.AddComent("INICIO NOT")
 			retornoIzq = p.Op1.Ejecutar(controlador, generador, env, env_uni)
 			if retornoIzq.Type == p_Interface.BOOLEAN {
 
@@ -138,12 +138,30 @@ func (p Logica) Ejecutar(controlador *p_Controlador.Controlador2, generador *p_G
 				}
 				retornoIzq.TrueLabel = sup1
 				retornoIzq.FalseLabel = sup
+
+				if retornoIzq.IsCV && retornoIzq.Type == p_Interface.BOOLEAN {
+					temporalin := generador.NewTemp()
+					labelsito1 := generador.NewLabel()
+					labelsito2 := generador.NewLabel()
+					labelsito3 := generador.NewLabel()
+					generador.AddIf(retornoIzq.Valor, "1", "==", labelsito1)
+					generador.AddGoTo(labelsito2)
+					generador.AddLabel(labelsito1)
+					generador.AddExpression(temporalin, "0", "", "")
+					generador.AddGoTo(labelsito3)
+					generador.AddLabel(labelsito2)
+					generador.AddExpression(temporalin, "1", "", "")
+					generador.AddLabel(labelsito3)
+					retornoIzq.Valor = temporalin
+				}
+
 				/*sup1, _ := strconv.ParseBool(retornoIzq.Valor)
 				if sup1 {
 					generador.AddGoTo(falseLabel)
 				} else {
 					generador.AddGoTo(trueLabel)
 				}*/
+				generador.AddComent("FIN NOT")
 				return retornoIzq
 			} else {
 				var err = p_Errores.NewError("No se puede operara en la NOT", env.(p_Enviroment.Enviroment).HaveFatha(), p.Line, p.Column)

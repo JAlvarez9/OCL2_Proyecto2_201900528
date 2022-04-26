@@ -122,6 +122,8 @@ func (p Declaration) Ejecutar(controlador *p_Controlador.Controlador2, generador
 		}
 
 	}
+
+	generador.Valor_Return_Expre = ""
 	generador.AddComent("FINAL DECLARACION")
 	return result
 }

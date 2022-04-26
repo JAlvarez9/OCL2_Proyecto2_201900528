@@ -98,6 +98,9 @@ type InterpreteListener interface {
 	// EnterSent_if_expr is called when entering the sent_if_expr production.
 	EnterSent_if_expr(c *Sent_if_exprContext)
 
+	// EnterSent_instru_if_expre is called when entering the sent_instru_if_expre production.
+	EnterSent_instru_if_expre(c *Sent_instru_if_expreContext)
+
 	// EnterSent_loop_expr is called when entering the sent_loop_expr production.
 	EnterSent_loop_expr(c *Sent_loop_exprContext)
 
@@ -250,6 +253,9 @@ type InterpreteListener interface {
 
 	// ExitSent_if_expr is called when exiting the sent_if_expr production.
 	ExitSent_if_expr(c *Sent_if_exprContext)
+
+	// ExitSent_instru_if_expre is called when exiting the sent_instru_if_expre production.
+	ExitSent_instru_if_expre(c *Sent_instru_if_expreContext)
 
 	// ExitSent_loop_expr is called when exiting the sent_loop_expr production.
 	ExitSent_loop_expr(c *Sent_loop_exprContext)

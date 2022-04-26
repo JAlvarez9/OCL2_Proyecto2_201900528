@@ -374,12 +374,30 @@ asignacion returns[ interfaces.Instruction instr ]
     ;
 
 sent_if_expr returns [interfaces.Expresion p ]
-    : IF ini = expression LLAVEA exp1=expression LLAVEC { 
-        var a interfaces.Expresion
-        $p = sentenciasexpr.NewIf_expr($ini.p, $exp1.p,a, $IF.line, $IF.pos   ) 
+    : IF ini = expression LLAVEA instru=sent_instru_if_expre LLAVEC { 
+        b := arrayList.New()
+        $p = sentenciasexpr.NewIf_expr($ini.p, $instru.l,b, $IF.line, $IF.pos   ) 
         }
-    | IF ini = expression LLAVEA exp1=expression LLAVEC ELSE LLAVEA exp2=expression LLAVEC{ $p = sentenciasexpr.NewIf_expr($ini.p, $exp1.p, $exp2.p, $IF.line, $IF.pos ) }
-    | IF ini = expression LLAVEA exp1=expression LLAVEC ELSE sent = sent_if_expr{ $p = sentenciasexpr.NewIf_expr($ini.p, $exp1.p,$sent.p, $IF.line, $IF.pos   )  }
+    | IF ini = expression LLAVEA instru=sent_instru_if_expre LLAVEC ELSE LLAVEA instru2=sent_instru_if_expre LLAVEC{ 
+        $p = sentenciasexpr.NewIf_expr($ini.p, $instru.l, $instru2.l , $IF.line, $IF.pos ) 
+        }
+    | IF ini = expression LLAVEA instru=sent_instru_if_expre LLAVEC ELSE sent = sent_if_expr{ 
+        a := arrayList.New()
+        a.Add($sent.p)
+        $p = sentenciasexpr.NewIf_expr($ini.p,$instru.l,a, $IF.line, $IF.pos   )  
+        }
+    ;
+
+sent_instru_if_expre returns [ *arrayList.List l ]
+    : in=instrucciones ex=expression { 
+        $in.l.Add($ex.p)
+        $l = $in.l
+     }
+    | ex=expression{
+        a := arrayList.New()
+        a.Add($ex.p)
+        $l = a
+    }
     ;
 
 sent_loop_expr returns [ interfaces.Expresion p ]
@@ -547,6 +565,7 @@ atributos_struct_decl_exp returns [ interfaces.Symbol s ]
 
 expression returns[interfaces.Expresion p]
     : INT DPTS DPTS op=POW PARA opIz=expression COMA opDe=expression PARC {$p=Operacion.NewOperacion_Arit($opIz.p,$op.text,$opDe.p,false,$INT.line,$INT.pos)}
+    | exp4=expression PNT TOSTRING PARA PARC { $p = funcionesnativas.NewToString($exp4.p, $TOSTRING.line, $TOSTRING.pos) }
     | FLOAT DPTS DPTS op=POWF PARA opIz=expression COMA opDe=expression PARC {$p=Operacion.NewOperacion_Arit($opIz.p,$op.text,$opDe.p,false,$FLOAT.line,$FLOAT.pos)}
     | exp8 =expression PNT LEN PARA PARC { $p = funcionesvectores.NewLen($exp8.p, $LEN.line, $LEN.pos) }
     | opIz = expression op=MODUL opDe = expression {$p=Operacion.NewOperacion_Arit($opIz.p,$op.text,$opDe.p,false,$op.line,$op.pos)} 
@@ -561,7 +580,6 @@ expression returns[interfaces.Expresion p]
     | ID PNT REMOVE PARA expression PARC { $p = funcionesvectores.NewRemove_exp($ID.text, $expression.p, $REMOVE.line, $REMOVE.pos) } 
     | exp8 =expression PNT CONTAINS PARA PUNTERO expression PARC { $p = funcionesvectores.NewContains($exp8.p, $expression.p, $CONTAINS.line, $CONTAINS.pos ) }
     | exp4=expression PNT TOCHARS PARA PARC { $p = funcionesnativas.NewToChar($exp4.p, $TOCHARS.line, $TOCHARS.pos) }
-    | exp4=expression PNT TOSTRING PARA PARC { $p = funcionesnativas.NewToString($exp4.p, $TOSTRING.line, $TOSTRING.pos) }
     | exp4=expression PNT TOOWNED PARA PARC { $p = funcionesnativas.NewToString($exp4.p, $TOOWNED.line, $TOOWNED.pos) }
     | exp5=expression CASTEO tipo { $p = casteos.NewCasteo($exp5.p, $tipo.te, $CASTEO.line , $CASTEO.pos ) }
     | exp6=expression PNT ABOSLU PARA PARC { $p = funcionesnativas.NewAbsoluto($exp6.p, $ABOSLU.line, $ABOSLU.pos) }

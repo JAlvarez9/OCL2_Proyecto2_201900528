@@ -26,5 +26,17 @@ func NewLoop(bloque *arrayList.List, line int, columna int) Loop {
 
 func (p Loop) Ejecutar(controlador *p_Controlador.Controlador2, generador *p_Generador.Generador, env interface{}, env_uni interface{}) p_Interfaces.Value {
 	var result p_Interfaces.Value
+
+	initalLabel := generador.NewLabel()
+	finalLabel := generador.NewLabel()
+	generador.AddBreakList(finalLabel)
+	generador.AddLabel(initalLabel)
+	for _, s := range p.Bloque_loop.ToArray() {
+		s.(p_Interfaces.Instruction).Ejecutar(controlador, generador, env, env_uni)
+	}
+	generador.AddGoTo(initalLabel)
+	generador.AddLabel(finalLabel)
+	generador.QuitLastBreak()
+
 	return result
 }

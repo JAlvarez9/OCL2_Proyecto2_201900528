@@ -27,7 +27,6 @@ func (p Continue) Ejecutar(controlador *p_Controlador.Controlador2, generador *p
 		TrueLabel:  "",
 		FalseLabel: "",
 	}
-
 	generador.AddComent("INICIO CONTINUE")
 	generador.AddGoTo(generador.GetLastContinue())
 	generador.AddComent("FIN CONTINUE")

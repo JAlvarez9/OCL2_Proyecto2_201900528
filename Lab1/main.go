@@ -149,6 +149,18 @@ func (this *TreeShapeListener) ExitStart(ctx *parser.StartContext) {
 		}
 	*/
 
+	generador.Func_Nat_Print_True()
+	generador.Func_Nat_Print_False()
+	generador.Func_Nat_Print_MathError()
+	generador.Func_Nat_Print_Null()
+	generador.AddImprimirString()
+	generador.Func_Nat_Pow_proc()
+	generador.Func_Nat_Compare_String()
+	generador.Fun_Mayor_Menor_Que_String()
+	generador.Func_Concat_Strings()
+	generador.Func_Nat_Int_String()
+	generador.Func_Nat_Double_String()
+
 	for _, s := range result.ToArray() {
 		if reflect.TypeOf(s).String() == "instruction.Funcion" {
 			if s.(p_Instruction.Funcion).Id == "main" {
@@ -158,19 +170,10 @@ func (this *TreeShapeListener) ExitStart(ctx *parser.StartContext) {
 		}
 	}
 
-	generador.Func_Nat_Print_True()
-	generador.Func_Nat_Print_False()
-	generador.Func_Nat_Print_MathError()
-	generador.Func_Nat_Print_Null()
-	generador.AddImprimirString()
-	generador.Func_Nat_Pow_proc()
-	generador.Func_Nat_Compare_String()
-	generador.Fun_Mayor_Menor_Que_String()
-
 	salida += "#include <stdio.h>\n"
 	salida += "#include <math.h>\n"
-	salida += "double HEAP[82000];\n"
-	salida += "double STACK[82000];\n"
+	salida += "double HEAP[200000];\n"
+	salida += "double STACK[200000];\n"
 	salida += "double P;\n"
 	salida += "double H;\n"
 	salida += "double "

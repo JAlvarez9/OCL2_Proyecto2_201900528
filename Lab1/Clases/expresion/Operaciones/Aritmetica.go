@@ -54,6 +54,7 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.FLOAT && retornoDer.Type == p_Interface.FLOAT {
+
 				generador.AddExpression(newTemp, retornoIzq.Valor, retornoDer.Valor, "+")
 				return p_Interface.Value{
 					Valor:      newTemp,
@@ -64,9 +65,65 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					IsArit:     true,
 				}
 			} else if retornoIzq.Type == p_Interface.STR && retornoDer.Type == p_Interface.STR {
-				generador.AddExpression(newTemp, retornoIzq.Valor, retornoDer.Valor, "+")
+
+				heapIzq := generador.NewTemp()
+				heapDer := generador.NewTemp()
+				if retornoIzq.IsP {
+					generador.AddComent("INICIO STRING")
+					runas := []rune(retornoIzq.Valor)
+					var ascii []int
+
+					for i := 0; i < len(runas); i++ {
+						ascii = append(ascii, int(runas[i]))
+					}
+
+					generador.AddExpression(heapIzq, "H", "", "")
+					for i := 0; i < len(ascii); i++ {
+						generador.AddHeap("H", strconv.Itoa(ascii[i]))
+						generador.AddExpression("H", "H", "1", "+")
+					}
+					generador.AddHeap("H", "-1")
+					generador.AddExpression("H", "H", "1", "+")
+					generador.AddComent("FINAL STRING")
+				}
+				if retornoDer.IsP {
+					generador.AddComent("INICIO STRING")
+					runas := []rune(retornoDer.Valor)
+					var ascii []int
+
+					for i := 0; i < len(runas); i++ {
+						ascii = append(ascii, int(runas[i]))
+					}
+
+					generador.AddExpression(heapDer, "H", "", "")
+					for i := 0; i < len(ascii); i++ {
+						generador.AddHeap("H", strconv.Itoa(ascii[i]))
+						generador.AddExpression("H", "H", "1", "+")
+					}
+					generador.AddHeap("H", "-1")
+					generador.AddExpression("H", "H", "1", "+")
+					generador.AddComent("FINAL STRING")
+				}
+				if retornoIzq.IsCV || retornoIzq.IsArit {
+					heapIzq = retornoIzq.Valor
+				}
+				if retornoDer.IsCV || retornoDer.IsArit {
+					heapDer = retornoDer.Valor
+				}
+				temporalin1 := generador.NewTemp()
+				temporalin2 := generador.NewTemp()
+				temporalin3 := generador.NewTemp()
+				generador.AddExpression("P", "P", strconv.Itoa(env.(p_Enviroment.Enviroment).GetSize()), "+")
+				generador.AddExpression(temporalin2, "P", "1", "+")
+				generador.AddStack(temporalin2, heapIzq)
+				generador.AddExpression(temporalin3, "P", "2", "+")
+				generador.AddStack(temporalin3, heapDer)
+				generador.Bring_Func("Native_Concat_Str")
+				generador.AddExpression(temporalin1, "STACK[(int)P]", "", "")
+				generador.AddExpression("P", "P", strconv.Itoa(env.(p_Enviroment.Enviroment).GetSize()), "-")
+
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      temporalin1,
 					IsTemp:     true,
 					Type:       p_Interface.STR,
 					TrueLabel:  "",
@@ -75,9 +132,65 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 				}
 
 			} else if retornoIzq.Type == p_Interface.STRING && retornoDer.Type == p_Interface.STRING {
-				generador.AddExpression(newTemp, retornoIzq.Valor, retornoDer.Valor, "+")
+				generador.AddComent("INICIO CONCAT STRING")
+				heapIzq := generador.NewTemp()
+				heapDer := generador.NewTemp()
+				if retornoIzq.IsP {
+					generador.AddComent("INICIO STRING")
+					runas := []rune(retornoIzq.Valor)
+					var ascii []int
+
+					for i := 0; i < len(runas); i++ {
+						ascii = append(ascii, int(runas[i]))
+					}
+
+					generador.AddExpression(heapIzq, "H", "", "")
+					for i := 0; i < len(ascii); i++ {
+						generador.AddHeap("H", strconv.Itoa(ascii[i]))
+						generador.AddExpression("H", "H", "1", "+")
+					}
+					generador.AddHeap("H", "-1")
+					generador.AddExpression("H", "H", "1", "+")
+					generador.AddComent("FINAL STRING")
+				}
+				if retornoDer.IsP {
+					generador.AddComent("INICIO STRING")
+					runas := []rune(retornoDer.Valor)
+					var ascii []int
+
+					for i := 0; i < len(runas); i++ {
+						ascii = append(ascii, int(runas[i]))
+					}
+
+					generador.AddExpression(heapDer, "H", "", "")
+					for i := 0; i < len(ascii); i++ {
+						generador.AddHeap("H", strconv.Itoa(ascii[i]))
+						generador.AddExpression("H", "H", "1", "+")
+					}
+					generador.AddHeap("H", "-1")
+					generador.AddExpression("H", "H", "1", "+")
+					generador.AddComent("FINAL STRING")
+				}
+				if retornoIzq.IsCV || retornoIzq.IsArit {
+					heapIzq = retornoIzq.Valor
+				}
+				if retornoDer.IsCV || retornoDer.IsArit {
+					heapDer = retornoDer.Valor
+				}
+				temporalin1 := generador.NewTemp()
+				temporalin2 := generador.NewTemp()
+				temporalin3 := generador.NewTemp()
+				generador.AddExpression("P", "P", strconv.Itoa(env.(p_Enviroment.Enviroment).GetSize()), "+")
+				generador.AddExpression(temporalin2, "P", "1", "+")
+				generador.AddStack(temporalin2, heapIzq)
+				generador.AddExpression(temporalin3, "P", "2", "+")
+				generador.AddStack(temporalin3, heapDer)
+				generador.Bring_Func("Native_Concat_Str")
+				generador.AddExpression(temporalin1, "STACK[(int)P]", "", "")
+				generador.AddExpression("P", "P", strconv.Itoa(env.(p_Enviroment.Enviroment).GetSize()), "-")
+				generador.AddComent("FIN CONCAT STRING")
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      temporalin1,
 					IsTemp:     true,
 					Type:       p_Interface.STRING,
 					TrueLabel:  "",
@@ -85,9 +198,63 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					IsArit:     true,
 				}
 			} else if retornoIzq.Type == p_Interface.STR && retornoDer.Type == p_Interface.STRING {
-				generador.AddExpression(newTemp, retornoIzq.Valor, retornoDer.Valor, "+")
+				heapIzq := generador.NewTemp()
+				heapDer := generador.NewTemp()
+				if retornoIzq.IsP {
+					generador.AddComent("INICIO STRING")
+					runas := []rune(retornoIzq.Valor)
+					var ascii []int
+
+					for i := 0; i < len(runas); i++ {
+						ascii = append(ascii, int(runas[i]))
+					}
+
+					generador.AddExpression(heapIzq, "H", "", "")
+					for i := 0; i < len(ascii); i++ {
+						generador.AddHeap("H", strconv.Itoa(ascii[i]))
+						generador.AddExpression("H", "H", "1", "+")
+					}
+					generador.AddHeap("H", "-1")
+					generador.AddExpression("H", "H", "1", "+")
+					generador.AddComent("FINAL STRING")
+				}
+				if retornoDer.IsP {
+					generador.AddComent("INICIO STRING")
+					runas := []rune(retornoDer.Valor)
+					var ascii []int
+
+					for i := 0; i < len(runas); i++ {
+						ascii = append(ascii, int(runas[i]))
+					}
+
+					generador.AddExpression(heapDer, "H", "", "")
+					for i := 0; i < len(ascii); i++ {
+						generador.AddHeap("H", strconv.Itoa(ascii[i]))
+						generador.AddExpression("H", "H", "1", "+")
+					}
+					generador.AddHeap("H", "-1")
+					generador.AddExpression("H", "H", "1", "+")
+					generador.AddComent("FINAL STRING")
+				}
+				if retornoIzq.IsCV || retornoIzq.IsArit {
+					heapIzq = retornoIzq.Valor
+				}
+				if retornoDer.IsCV || retornoDer.IsArit {
+					heapDer = retornoDer.Valor
+				}
+				temporalin1 := generador.NewTemp()
+				temporalin2 := generador.NewTemp()
+				temporalin3 := generador.NewTemp()
+				generador.AddExpression("P", "P", strconv.Itoa(env.(p_Enviroment.Enviroment).GetSize()), "+")
+				generador.AddExpression(temporalin2, "P", "1", "+")
+				generador.AddStack(temporalin2, heapIzq)
+				generador.AddExpression(temporalin3, "P", "2", "+")
+				generador.AddStack(temporalin3, heapDer)
+				generador.Bring_Func("Native_Concat_Str")
+				generador.AddExpression(temporalin1, "STACK[(int)P]", "", "")
+				generador.AddExpression("P", "P", strconv.Itoa(env.(p_Enviroment.Enviroment).GetSize()), "-")
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      temporalin1,
 					IsTemp:     true,
 					Type:       p_Interface.STRING,
 					TrueLabel:  "",
@@ -95,9 +262,63 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					IsArit:     true,
 				}
 			} else if retornoIzq.Type == p_Interface.STRING && retornoDer.Type == p_Interface.STR {
-				generador.AddExpression(newTemp, retornoIzq.Valor, retornoDer.Valor, "+")
+				heapIzq := generador.NewTemp()
+				heapDer := generador.NewTemp()
+				if retornoIzq.IsP {
+					generador.AddComent("INICIO STRING")
+					runas := []rune(retornoIzq.Valor)
+					var ascii []int
+
+					for i := 0; i < len(runas); i++ {
+						ascii = append(ascii, int(runas[i]))
+					}
+
+					generador.AddExpression(heapIzq, "H", "", "")
+					for i := 0; i < len(ascii); i++ {
+						generador.AddHeap("H", strconv.Itoa(ascii[i]))
+						generador.AddExpression("H", "H", "1", "+")
+					}
+					generador.AddHeap("H", "-1")
+					generador.AddExpression("H", "H", "1", "+")
+					generador.AddComent("FINAL STRING")
+				}
+				if retornoDer.IsP {
+					generador.AddComent("INICIO STRING")
+					runas := []rune(retornoDer.Valor)
+					var ascii []int
+
+					for i := 0; i < len(runas); i++ {
+						ascii = append(ascii, int(runas[i]))
+					}
+
+					generador.AddExpression(heapDer, "H", "", "")
+					for i := 0; i < len(ascii); i++ {
+						generador.AddHeap("H", strconv.Itoa(ascii[i]))
+						generador.AddExpression("H", "H", "1", "+")
+					}
+					generador.AddHeap("H", "-1")
+					generador.AddExpression("H", "H", "1", "+")
+					generador.AddComent("FINAL STRING")
+				}
+				if retornoIzq.IsCV || retornoIzq.IsArit {
+					heapIzq = retornoIzq.Valor
+				}
+				if retornoDer.IsCV || retornoDer.IsArit {
+					heapDer = retornoDer.Valor
+				}
+				temporalin1 := generador.NewTemp()
+				temporalin2 := generador.NewTemp()
+				temporalin3 := generador.NewTemp()
+				generador.AddExpression("P", "P", strconv.Itoa(env.(p_Enviroment.Enviroment).GetSize()), "+")
+				generador.AddExpression(temporalin2, "P", "1", "+")
+				generador.AddStack(temporalin2, heapIzq)
+				generador.AddExpression(temporalin3, "P", "2", "+")
+				generador.AddStack(temporalin3, heapDer)
+				generador.Bring_Func("Native_Concat_Str")
+				generador.AddExpression(temporalin1, "STACK[(int)P]", "", "")
+				generador.AddExpression("P", "P", strconv.Itoa(env.(p_Enviroment.Enviroment).GetSize()), "-")
 				return p_Interface.Value{
-					Valor:      newTemp,
+					Valor:      temporalin1,
 					IsTemp:     true,
 					Type:       p_Interface.STRING,
 					TrueLabel:  "",
@@ -156,14 +377,30 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 
 			if p.Unario == true {
 				if retornoIzq.Type == p_Interface.INTEGER {
-
+					generador.AddExpression(newTemp, "", retornoIzq.Valor, "-")
+					return p_Interface.Value{
+						Valor:      newTemp,
+						IsTemp:     true,
+						Type:       p_Interface.INTEGER,
+						TrueLabel:  "",
+						FalseLabel: "",
+						IsArit:     true,
+					}
 				} else if retornoIzq.Type == p_Interface.FLOAT {
-
+					generador.AddExpression(newTemp, "", retornoIzq.Valor, "-")
+					return p_Interface.Value{
+						Valor:      newTemp,
+						IsTemp:     true,
+						Type:       p_Interface.FLOAT,
+						TrueLabel:  "",
+						FalseLabel: "",
+						IsArit:     true,
+					}
 				}
 			}
 
 			if retornoIzq.Type == p_Interface.INTEGER && retornoDer.Type == p_Interface.INTEGER {
-				generador.AddExpression(newTemp, retornoIzq.Valor, retornoDer.Valor, "-")
+				generador.AddExpression(newTemp, "(int)"+retornoIzq.Valor, "(int)"+retornoDer.Valor, "-")
 				return p_Interface.Value{
 					Valor:      newTemp,
 					IsTemp:     true,
@@ -173,7 +410,7 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					IsArit:     true,
 				}
 			} else if retornoIzq.Type == p_Interface.FLOAT && retornoDer.Type == p_Interface.FLOAT {
-				generador.AddExpression(newTemp, retornoIzq.Valor, retornoDer.Valor, "-")
+				generador.AddExpression(newTemp, "(int)"+retornoIzq.Valor, "(int)"+retornoDer.Valor, "-")
 				return p_Interface.Value{
 					Valor:      newTemp,
 					IsTemp:     true,
@@ -183,7 +420,7 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					IsArit:     true,
 				}
 			} else if retornoIzq.Type == p_Interface.USIZE && retornoDer.Type == p_Interface.USIZE {
-				generador.AddExpression(newTemp, retornoIzq.Valor, retornoDer.Valor, "-")
+				generador.AddExpression(newTemp, "(int)"+retornoIzq.Valor, "(int)"+retornoDer.Valor, "-")
 				return p_Interface.Value{
 					Valor:      newTemp,
 					IsTemp:     true,
@@ -193,7 +430,7 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					IsArit:     true,
 				}
 			} else if retornoIzq.Type == p_Interface.USIZE && retornoDer.Type == p_Interface.INTEGER {
-				generador.AddExpression(newTemp, retornoIzq.Valor, retornoDer.Valor, "-")
+				generador.AddExpression(newTemp, "(int)"+retornoIzq.Valor, "(int)"+retornoDer.Valor, "-")
 				return p_Interface.Value{
 					Valor:      newTemp,
 					IsTemp:     true,
@@ -203,7 +440,7 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					IsArit:     true,
 				}
 			} else if retornoIzq.Type == p_Interface.INTEGER && retornoDer.Type == p_Interface.USIZE {
-				generador.AddExpression(newTemp, retornoIzq.Valor, retornoDer.Valor, "-")
+				generador.AddExpression(newTemp, "(int)"+retornoIzq.Valor, "(int)"+retornoDer.Valor, "-")
 				return p_Interface.Value{
 					Valor:      newTemp,
 					IsTemp:     true,
@@ -486,7 +723,7 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 			//dominante = resta_mul_pot_mod_dominante[retornoIzq.Type][retornoDer.Type]
 
 			if retornoIzq.Type == p_Interface.INTEGER && retornoDer.Type == p_Interface.INTEGER {
-				generador.AddExpression(newTemp, retornoIzq.Valor, retornoDer.Valor, "%")
+				generador.AddExpression(newTemp, "(int)"+retornoIzq.Valor, "(int)"+retornoDer.Valor, "%")
 				return p_Interface.Value{
 					Valor:      newTemp,
 					IsTemp:     true,
@@ -496,7 +733,7 @@ func (p Aritmetica) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					IsArit:     true,
 				}
 			} else if retornoIzq.Type == p_Interface.FLOAT && retornoDer.Type == p_Interface.FLOAT {
-				generador.AddExpression(newTemp, retornoIzq.Valor, retornoDer.Valor, "%")
+				generador.AddExpression(newTemp, "(int)"+retornoIzq.Valor, "(int)"+retornoDer.Valor, "%")
 				return p_Interface.Value{
 					Valor:      newTemp,
 					IsTemp:     true,

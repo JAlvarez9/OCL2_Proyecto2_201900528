@@ -203,6 +203,12 @@ func (s *BaseInterpreteListener) EnterSent_if_expr(ctx *Sent_if_exprContext) {}
 // ExitSent_if_expr is called when production sent_if_expr is exited.
 func (s *BaseInterpreteListener) ExitSent_if_expr(ctx *Sent_if_exprContext) {}
 
+// EnterSent_instru_if_expre is called when production sent_instru_if_expre is entered.
+func (s *BaseInterpreteListener) EnterSent_instru_if_expre(ctx *Sent_instru_if_expreContext) {}
+
+// ExitSent_instru_if_expre is called when production sent_instru_if_expre is exited.
+func (s *BaseInterpreteListener) ExitSent_instru_if_expre(ctx *Sent_instru_if_expreContext) {}
+
 // EnterSent_loop_expr is called when production sent_loop_expr is entered.
 func (s *BaseInterpreteListener) EnterSent_loop_expr(ctx *Sent_loop_exprContext) {}
 
