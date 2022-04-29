@@ -197,6 +197,12 @@ func (s *BaseInterpreteListener) EnterAsignacion(ctx *AsignacionContext) {}
 // ExitAsignacion is called when production asignacion is exited.
 func (s *BaseInterpreteListener) ExitAsignacion(ctx *AsignacionContext) {}
 
+// EnterAsig_array_vect is called when production asig_array_vect is entered.
+func (s *BaseInterpreteListener) EnterAsig_array_vect(ctx *Asig_array_vectContext) {}
+
+// ExitAsig_array_vect is called when production asig_array_vect is exited.
+func (s *BaseInterpreteListener) ExitAsig_array_vect(ctx *Asig_array_vectContext) {}
+
 // EnterSent_if_expr is called when production sent_if_expr is entered.
 func (s *BaseInterpreteListener) EnterSent_if_expr(ctx *Sent_if_exprContext) {}
 

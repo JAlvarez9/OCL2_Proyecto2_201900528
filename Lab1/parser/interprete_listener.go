@@ -95,6 +95,9 @@ type InterpreteListener interface {
 	// EnterAsignacion is called when entering the asignacion production.
 	EnterAsignacion(c *AsignacionContext)
 
+	// EnterAsig_array_vect is called when entering the asig_array_vect production.
+	EnterAsig_array_vect(c *Asig_array_vectContext)
+
 	// EnterSent_if_expr is called when entering the sent_if_expr production.
 	EnterSent_if_expr(c *Sent_if_exprContext)
 
@@ -250,6 +253,9 @@ type InterpreteListener interface {
 
 	// ExitAsignacion is called when exiting the asignacion production.
 	ExitAsignacion(c *AsignacionContext)
+
+	// ExitAsig_array_vect is called when exiting the asig_array_vect production.
+	ExitAsig_array_vect(c *Asig_array_vectContext)
 
 	// ExitSent_if_expr is called when exiting the sent_if_expr production.
 	ExitSent_if_expr(c *Sent_if_exprContext)

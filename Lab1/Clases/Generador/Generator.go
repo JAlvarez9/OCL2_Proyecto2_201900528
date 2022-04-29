@@ -685,6 +685,24 @@ func (g *Generador) Func_Nat_Double_String() {
 
 }
 
+func (g *Generador) Func_Nat_Abso() {
+	g.Ini_func("void", "Native_Abs")
+	temporalin1 := g.NewTemp()
+	temporalin2 := g.NewTemp()
+	labelsito1 := g.NewLabel()
+	labelsito2 := g.NewLabel()
+
+	g.AddExpression(temporalin1, "P", "1", "+")
+	g.AddExpression(temporalin2, "STACK[(int)"+temporalin1+"]", "", "")
+	g.AddIf(temporalin2, "0", "<", labelsito1)
+	g.AddGoTo(labelsito2)
+	g.AddLabel(labelsito1)
+	g.AddExpression(temporalin2, temporalin2, "-1", "*")
+	g.AddLabel(labelsito2)
+	g.AddStack("P", temporalin2)
+	g.Finish_func()
+}
+
 func (g *Generador) Bring_Func(id string) {
 	g.AddInstruc(id + "();")
 }

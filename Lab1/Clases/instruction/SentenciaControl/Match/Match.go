@@ -77,14 +77,16 @@ func (p Match) Ejecutar(controlador *p_Controlador.Controlador2, generador *p_Ge
 		a := instr.(Brazo).Expresiones
 		trueLabel := generador.NewLabel()
 		falseLabel := generador.NewLabel()
-		for _, brazin := range a.ToArray() {
+		for i, brazin := range a.ToArray() {
 
 			bra := brazin.(p_Interfaces.Expresion)
 			sup := bra.Ejecutar(controlador, generador, env, env_uni)
 
 			if sup.Type == p_Interfaces.INTEGER || sup.Type == p_Interfaces.FLOAT {
 				generador.AddIf(generador.ExpMatch.(p_Interfaces.Value).Valor, sup.Valor, "==", trueLabel)
-				generador.AddGoTo(falseLabel)
+				if i == a.Len()-1 {
+					generador.AddGoTo(falseLabel)
+				}
 			} else if sup.Type == p_Interfaces.STR || sup.Type == p_Interfaces.STRING {
 				runs := []rune(sup.Valor)
 				var val_Ascci []int
@@ -119,7 +121,9 @@ func (p Match) Ejecutar(controlador *p_Controlador.Controlador2, generador *p_Ge
 				generador.AddExpression(temporalin3, "STACK[(int)P]", "", "")
 				generador.AddExpression("P", "P", strconv.Itoa(env.(p_Enviroment.Enviroment).GetSize()), "-")
 				generador.AddIf(temporalin3, "1", "==", trueLabel)
-				generador.AddGoTo(falseLabel)
+				if i == a.Len()-1 {
+					generador.AddGoTo(falseLabel)
+				}
 			} else if sup.Type == p_Interfaces.BOOLEAN {
 				if sup.Valor == "true" {
 					sup.Valor = "1"
@@ -127,16 +131,16 @@ func (p Match) Ejecutar(controlador *p_Controlador.Controlador2, generador *p_Ge
 					sup.Valor = "0"
 				}
 				generador.AddIf(result.Valor, sup.Valor, "==", trueLabel)
-				generador.AddGoTo(falseLabel)
+
 			}
 
 		}
 		generador.AddLabel(trueLabel)
 		instr.(p_Interfaces.Instruction).Ejecutar(controlador, generador, env, env_uni)
+
 		generador.AddGoTo(exitLabel)
 
 		generador.AddLabel(falseLabel)
-
 		generador.AddComent("FINAL BRAZO")
 	}
 

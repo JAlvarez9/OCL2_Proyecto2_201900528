@@ -4,6 +4,7 @@ import (
 	p_Controlador "LAB1/Clases/Controlador"
 	p_Generador "LAB1/Clases/Generador"
 	p_Interfaces "LAB1/Clases/interfaces"
+	"strconv"
 
 	arrayList "github.com/colegno/arraylist"
 )
@@ -54,6 +55,9 @@ func (p If_expr) Ejecutar(controlador *p_Controlador.Controlador2, generador *p_
 		generador.AddGoTo(result.FalseLabel)
 
 	}
+	if result.IsP {
+
+	}
 
 	generador.AddLabel(result.TrueLabel)
 	for i, s := range p.Bloque_if.ToArray() {
@@ -62,7 +66,28 @@ func (p If_expr) Ejecutar(controlador *p_Controlador.Controlador2, generador *p_
 			s.(p_Interfaces.Instruction).Ejecutar(controlador, generador, env, env_uni)
 		} else {
 			a := s.(p_Interfaces.Expresion).Ejecutar(controlador, generador, env, env_uni)
-			generador.AddExpression(resultTemp, a.Valor, "", "")
+			if a.Type == p_Interfaces.STR || a.Type == p_Interfaces.STRING {
+				tempo := generador.NewTemp()
+				generador.AddComent("INICIO STRING")
+				runas := []rune(a.Valor)
+				var ascii []int
+
+				for i := 0; i < len(runas); i++ {
+					ascii = append(ascii, int(runas[i]))
+				}
+
+				generador.AddExpression(tempo, "H", "", "")
+				for i := 0; i < len(ascii); i++ {
+					generador.AddHeap("H", strconv.Itoa(ascii[i]))
+					generador.AddExpression("H", "H", "1", "+")
+				}
+				generador.AddHeap("H", "-1")
+				generador.AddExpression("H", "H", "1", "+")
+				generador.AddComent("FINAL STRING")
+				generador.AddExpression(resultTemp, tempo, "", "")
+			} else {
+				generador.AddExpression(resultTemp, a.Valor, "", "")
+			}
 
 		}
 
@@ -75,28 +100,33 @@ func (p If_expr) Ejecutar(controlador *p_Controlador.Controlador2, generador *p_
 			s.(p_Interfaces.Instruction).Ejecutar(controlador, generador, env, env_uni)
 		} else {
 			a := s.(p_Interfaces.Expresion).Ejecutar(controlador, generador, env, env_uni)
-			generador.AddExpression(resultTemp, a.Valor, "", "")
+			if a.Type == p_Interfaces.STR || a.Type == p_Interfaces.STRING {
+				tempo := generador.NewTemp()
+				generador.AddComent("INICIO STRING")
+				runas := []rune(a.Valor)
+				var ascii []int
+
+				for i := 0; i < len(runas); i++ {
+					ascii = append(ascii, int(runas[i]))
+				}
+
+				generador.AddExpression(tempo, "H", "", "")
+				for i := 0; i < len(ascii); i++ {
+					generador.AddHeap("H", strconv.Itoa(ascii[i]))
+					generador.AddExpression("H", "H", "1", "+")
+				}
+				generador.AddHeap("H", "-1")
+				generador.AddExpression("H", "H", "1", "+")
+				generador.AddComent("FINAL STRING")
+				generador.AddExpression(resultTemp, tempo, "", "")
+			} else {
+				generador.AddExpression(resultTemp, a.Valor, "", "")
+			}
 		}
 
 	}
 	generador.AddLabel(finalLabel)
 	generador.AddComent("FINAL IF-EXPRESION")
-	/*for i, s := range p.Bloque_if.ToArray() {
-
-		if i != p.Bloque_if.Len()-1 {
-			s.(p_Interfaces.Instruction).Ejecutar(controlador, generador, env, env_uni)
-		} else {
-			s.(p_Interfaces.Expresion).Ejecutar(controlador, generador, env, env_uni)
-		}
-	}
-
-	for i, s := range p.Bloque_else.ToArray() {
-		if i != p.Bloque_if.Len()-1 {
-			s.(p_Interfaces.Instruction).Ejecutar(controlador, generador, env, env_uni)
-		} else {
-			s.(p_Interfaces.Expresion).Ejecutar(controlador, generador, env, env_uni)
-		}
-	}*/
 
 	return regreso
 }

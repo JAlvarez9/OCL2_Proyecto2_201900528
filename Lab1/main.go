@@ -14,6 +14,7 @@ import (
 	p_Errores "LAB1/Clases/Errores"
 	p_Generador "LAB1/Clases/Generador"
 	p_Instruction "LAB1/Clases/instruction"
+	p_Structs "LAB1/Clases/instruction/Structs"
 
 	"LAB1/Clases/interfaces"
 
@@ -149,6 +150,12 @@ func (this *TreeShapeListener) ExitStart(ctx *parser.StartContext) {
 		}
 	*/
 
+	for _, s := range result.ToArray() {
+		if reflect.TypeOf(s).String() == "structs.Struct" {
+			s.(p_Structs.Struct).GuardarStruct(&controlador, globalEnv)
+		}
+	}
+
 	generador.Func_Nat_Print_True()
 	generador.Func_Nat_Print_False()
 	generador.Func_Nat_Print_MathError()
@@ -160,6 +167,7 @@ func (this *TreeShapeListener) ExitStart(ctx *parser.StartContext) {
 	generador.Func_Concat_Strings()
 	generador.Func_Nat_Int_String()
 	generador.Func_Nat_Double_String()
+	generador.Func_Nat_Abso()
 
 	for _, s := range result.ToArray() {
 		if reflect.TypeOf(s).String() == "instruction.Funcion" {

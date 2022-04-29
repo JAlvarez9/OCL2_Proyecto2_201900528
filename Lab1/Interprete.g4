@@ -199,17 +199,25 @@ funciones_Trans returns [interfaces.Instruction instr]
 
 declaracion returns[ interfaces.Instruction instr ]
     : LET MUT ID DPTS  tipo IGUAL expression PYC { 
-        $instr = instruction.NewDeclaration($ID.text, $tipo.te, $expression.p, true ,$IGUAL.line,$IGUAL.pos ) 
+        $instr = instruction.NewDeclaration($ID.text, $tipo.te, "" ,$expression.p, true ,$IGUAL.line,$IGUAL.pos ) 
         }
     | LET ID DPTS  tipo IGUAL expression PYC { 
-        $instr = instruction.NewDeclaration($ID.text, $tipo.te, $expression.p, false,  $IGUAL.line,$IGUAL.pos ) 
+        $instr = instruction.NewDeclaration($ID.text, $tipo.te, "" ,$expression.p, false,  $IGUAL.line,$IGUAL.pos ) 
+        }
+    | LET MUT id1=ID DPTS  id2=ID IGUAL expression PYC { 
+        var a interfaces.TipoExpresion
+        $instr = instruction.NewDeclaration($id1.text, a, $id2.text, $expression.p, true ,$IGUAL.line,$IGUAL.pos ) 
+        }
+    | LET id1=ID DPTS  id2=ID IGUAL expression PYC { 
+        var a interfaces.TipoExpresion
+        $instr = instruction.NewDeclaration($id1.text, a, $id2.text ,$expression.p, false,  $IGUAL.line,$IGUAL.pos ) 
         }
     //Sentencias expresion
     | LET MUT ID DPTS tipo IGUAL sentencias_expr PYC { 
-        $instr = instruction.NewDeclaration($ID.text, $tipo.te, $sentencias_expr.p, true,$IGUAL.line,$IGUAL.pos ) 
+        $instr = instruction.NewDeclaration($ID.text, $tipo.te, "" ,$sentencias_expr.p, true,$IGUAL.line,$IGUAL.pos ) 
         }
     | LET ID DPTS tipo IGUAL sentencias_expr PYC { 
-        $instr = instruction.NewDeclaration($ID.text, $tipo.te, $sentencias_expr.p, false, $IGUAL.line,$IGUAL.pos ) 
+        $instr = instruction.NewDeclaration($ID.text, $tipo.te, "" ,$sentencias_expr.p, false, $IGUAL.line,$IGUAL.pos ) 
         }
     ;
 
@@ -217,16 +225,8 @@ array_decl returns [ interfaces.Instruction instr ]
     : LET MUT ID DPTS tr=array_decl_array IGUAL ea=expression_vec_Arr PYC { 
         $instr = instruction.NewDeclaration_Array($ID.text, $tr.at, $ea.p, true, $LET.line,$LET.pos) 
     }
-    | LET MUT ID IGUAL ea=expression_vec_Arr PYC {
-        var a *structsinter.Array_type
-        $instr = instruction.NewDeclaration_Array($ID.text, a, $ea.p, true, $LET.line,$LET.pos) 
-    }
     | LET ID DPTS tr=array_decl_array IGUAL ea=expression_vec_Arr PYC {
         $instr = instruction.NewDeclaration_Array($ID.text, $tr.at, $ea.p, false, $LET.line,$LET.pos) 
-    }
-    | LET ID IGUAL ea=expression_vec_Arr PYC {
-        var a *structsinter.Array_type
-        $instr = instruction.NewDeclaration_Array($ID.text, a, $ea.p, false, $LET.line,$LET.pos) 
     }
     ;
 
@@ -369,10 +369,29 @@ tipo returns[ interfaces.TipoExpresion te]
     ;
 
 asignacion returns[ interfaces.Instruction instr ]
-    : ID IGUAL expression PYC { $instr = instruction.NewAsignacion($ID.text, $expression.p, "" ,$ID.line, $ID.pos) }
-    | id1=ID PNT id2=ID IGUAL expression PYC { $instr = instruction.NewAsignacion($id1.text, $expression.p, $id2.text ,$ID.line, $ID.pos) }
+    : ID IGUAL expression PYC { 
+        a := arrayList.New()
+        $instr = instruction.NewAsignacion($ID.text, $expression.p, "" , a ,$ID.line, $ID.pos) 
+        }
+    | id1=ID PNT id2=ID IGUAL expression PYC { 
+        a := arrayList.New()
+        $instr = instruction.NewAsignacion($id1.text, $expression.p, $id2.text , a ,$ID.line, $ID.pos) 
+        }
+    | ID list=asig_array_vect IGUAL expression PYC {
+        $instr = instruction.NewAsignacion($ID.text, $expression.p, "" , $list.l ,$ID.line, $ID.pos) 
+    }
     ;
-
+asig_array_vect returns [ *arrayList.List l ]
+    : li = asig_array_vect CORCHA expression CORCHC {
+        $li.l.Add($expression.p)  
+        $l = $li.l
+    }
+    | CORCHA expression CORCHC {
+        a := arrayList.New()
+        a.Add($expression.p)
+        $l = a
+    }
+    ;
 sent_if_expr returns [interfaces.Expresion p ]
     : IF ini = expression LLAVEA instru=sent_instru_if_expre LLAVEC { 
         b := arrayList.New()

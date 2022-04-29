@@ -1497,7 +1497,7 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 		{
 
 			//dominante = logic_dominante[retornoIzq.Type][retornoDer.Type]
-			if retornoIzq.Type == p_Interface.INTEGER && retornoDer.Type == p_Interface.INTEGER || retornoIzq.Type == p_Interface.CHAR && retornoDer.Type == p_Interface.CHAR {
+			if retornoIzq.Type == p_Interface.INTEGER && retornoDer.Type == p_Interface.INTEGER {
 
 				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
 				generador.AddGoTo(falseLabel)
@@ -1837,6 +1837,81 @@ func (p Relacional) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 					Type:       p_Interface.BOOLEAN,
 					TrueLabel:  trueLabel,
 					FalseLabel: falseLabel,
+				}
+
+			} else if retornoIzq.Type == p_Interface.CHAR && retornoDer.Type == p_Interface.CHAR {
+
+				generador.AddComent("INICIO COMPARACION STRING")
+				heapIzq := generador.NewTemp()
+				heapDer := generador.NewTemp()
+
+				if retornoIzq.IsP {
+					generador.AddComent("INICIO STRING")
+					runas := []rune(retornoIzq.Valor)
+					var ascii []int
+
+					for i := 0; i < len(runas); i++ {
+						ascii = append(ascii, int(runas[i]))
+					}
+
+					generador.AddExpression(heapIzq, "H", "", "")
+					for i := 0; i < len(ascii); i++ {
+						generador.AddHeap("H", strconv.Itoa(ascii[i]))
+						generador.AddExpression("H", "H", "1", "+")
+					}
+					generador.AddHeap("H", "-1")
+					generador.AddExpression("H", "H", "1", "+")
+					generador.AddComent("FINAL STRING")
+				} else if retornoIzq.IsP == false {
+					heapIzq = retornoIzq.Valor
+				}
+
+				if retornoDer.IsP {
+					generador.AddComent("INICIO STRING")
+					runas := []rune(retornoDer.Valor)
+					var ascii []int
+
+					for i := 0; i < len(runas); i++ {
+						ascii = append(ascii, int(runas[i]))
+					}
+
+					generador.AddExpression(heapDer, "H", "", "")
+					for i := 0; i < len(ascii); i++ {
+						generador.AddHeap("H", strconv.Itoa(ascii[i]))
+						generador.AddExpression("H", "H", "1", "+")
+					}
+					generador.AddHeap("H", "-1")
+					generador.AddExpression("H", "H", "1", "+")
+					generador.AddComent("FINAL STRING")
+				} else if retornoDer.IsP == false {
+					heapDer = retornoDer.Valor
+				}
+
+				temporalin1 := generador.NewTemp()
+				temporalin2 := generador.NewTemp()
+				temporalin3 := generador.NewTemp()
+
+				generador.AddExpression("P", "P", strconv.Itoa(env.(p_Enviroment.Enviroment).GetSize()), "+")
+				generador.AddExpression(temporalin1, "P", "1", "+")
+				generador.AddStack(temporalin1, heapIzq)
+				generador.AddExpression(temporalin2, "P", "2", "+")
+				generador.AddStack(temporalin2, heapDer)
+				generador.Bring_Func("Native_Compare_Strings")
+				generador.AddExpression(temporalin3, "STACK[(int)P]", "", "")
+				generador.AddExpression("P", "P", strconv.Itoa(env.(p_Enviroment.Enviroment).GetSize()), "-")
+				generador.AddIf(temporalin3, "1", p.Operador, trueLabel)
+				generador.AddGoTo(falseLabel)
+				generador.AddComent("FINAL COMPARACION STRING")
+
+				generador.AddIf(retornoIzq.Valor, retornoDer.Valor, p.Operador, trueLabel)
+				generador.AddGoTo(falseLabel)
+				return p_Interface.Value{
+					Valor:        "",
+					IsTemp:       false,
+					Type:         p_Interface.BOOLEAN,
+					TrueLabel:    trueLabel,
+					FalseLabel:   falseLabel,
+					IsRelacional: true,
 				}
 
 			} else {

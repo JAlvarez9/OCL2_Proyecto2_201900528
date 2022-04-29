@@ -195,7 +195,7 @@ func (p Imprimir) Ejecutar(controlador *p_Controlador.Controlador2, generador *p
 		array_Exp := make([]string, 0)
 		array_Splitaso := make([]string, 0)
 		array_Concat := make([]string, 0)
-		var lastPart string
+		var lastPart, lastPartsu string
 
 		if strings.Contains(result.Valor, "{}") {
 			splitaso := strings.Split(result.Valor, "{}")
@@ -223,25 +223,28 @@ func (p Imprimir) Ejecutar(controlador *p_Controlador.Controlador2, generador *p
 					generador.AddComent("FINAL STRING")
 					array_Splitaso = append(array_Splitaso, tempo)
 
-				} else {
-					tempo := generador.NewTemp()
-					generador.AddComent("INICIO STRING")
-					runas := []rune(spl)
-					var ascii []int
+				} else if i == len(splitaso)-1 {
+					if splitaso[i] != "" {
+						tempo := generador.NewTemp()
+						generador.AddComent("INICIO STRING")
+						runas := []rune(spl)
+						var ascii []int
 
-					for i := 0; i < len(runas); i++ {
-						ascii = append(ascii, int(runas[i]))
-					}
+						for i := 0; i < len(runas); i++ {
+							ascii = append(ascii, int(runas[i]))
+						}
 
-					generador.AddExpression(tempo, "H", "", "")
-					for i := 0; i < len(ascii); i++ {
-						generador.AddHeap("H", strconv.Itoa(ascii[i]))
+						generador.AddExpression(tempo, "H", "", "")
+						for i := 0; i < len(ascii); i++ {
+							generador.AddHeap("H", strconv.Itoa(ascii[i]))
+							generador.AddExpression("H", "H", "1", "+")
+						}
+						generador.AddHeap("H", "-1")
 						generador.AddExpression("H", "H", "1", "+")
+						generador.AddComent("FINAL STRING")
+						lastPart = splitaso[i]
+						lastPartsu = tempo
 					}
-					generador.AddHeap("H", "-1")
-					generador.AddExpression("H", "H", "1", "+")
-					generador.AddComent("FINAL STRING")
-					lastPart = tempo
 				}
 
 			}
@@ -274,7 +277,7 @@ func (p Imprimir) Ejecutar(controlador *p_Controlador.Controlador2, generador *p
 							array_Exp = append(array_Exp, tempo)
 							generador.AddComent("FIN F64-STRING")
 
-						} else if sup.Type == p_Interface.STR || sup.Type == p_Interface.STRING {
+						} else if sup.Type == p_Interface.STR || sup.Type == p_Interface.STRING || sup.Type == p_Interface.CHAR {
 							generador.AddComent("INICIO STRING")
 							runas := []rune(sup.Valor)
 							var ascii []int
@@ -328,7 +331,7 @@ func (p Imprimir) Ejecutar(controlador *p_Controlador.Controlador2, generador *p
 						if sup.Type == p_Interface.STR || sup.Type == p_Interface.STRING {
 							tempo = sup.Valor
 							array_Exp = append(array_Exp, tempo)
-						} else if sup.Type == p_Interface.INTEGER {
+						} else if sup.Type == p_Interface.INTEGER || sup.Type == p_Interface.USIZE || sup.Type == p_Interface.CHAR {
 							generador.AddExpression("P", "P", strconv.Itoa(env.(p_Enviroment.Enviroment).GetSize()), "+")
 							tempStack := generador.NewTemp()
 							generador.AddExpression(tempStack, "P", "1", "+")
@@ -443,7 +446,7 @@ func (p Imprimir) Ejecutar(controlador *p_Controlador.Controlador2, generador *p
 				generador.AddStack(temporalin2, temporalin1)
 				temporalin3 := generador.NewTemp()
 				generador.AddExpression(temporalin3, "P", "2", "+")
-				generador.AddStack(temporalin3, lastPart)
+				generador.AddStack(temporalin3, lastPartsu)
 				generador.Bring_Func("Native_Concat_Str")
 				generador.AddExpression(temporalin1, "STACK[(int)P]", "", "")
 				generador.AddExpression("P", "P", strconv.Itoa(env.(p_Enviroment.Enviroment).GetSize()), "-")
