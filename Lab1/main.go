@@ -14,6 +14,7 @@ import (
 	p_Errores "LAB1/Clases/Errores"
 	p_Generador "LAB1/Clases/Generador"
 	p_Instruction "LAB1/Clases/instruction"
+	p_Modulos "LAB1/Clases/instruction/Modulos"
 	p_Structs "LAB1/Clases/instruction/Structs"
 
 	"LAB1/Clases/interfaces"
@@ -37,7 +38,6 @@ type Lista_Errores struct {
 	Listita   []p_Errores.Error
 	Listita_S []Simbolines
 	Listita_M []Modulines
-	Listita_T []Tablitas
 }
 
 type Simbolines struct {
@@ -49,15 +49,8 @@ type Simbolines struct {
 }
 
 type Modulines struct {
-	Nombre    string
-	No_Tablas int
-	Line      int
-}
-type Tablitas struct {
-	Nombre     string
-	Base       string
-	Visibildad string
-	Linea      int
+	Nombre string
+	Line   int
 }
 
 //Funciones Front
@@ -82,9 +75,6 @@ func ReportsPage(w http.ResponseWriter, r *http.Request) {
 	}
 	for i := 0; i < list_mod.Len(); i++ {
 		lista_to_Send.Listita_M = append(lista_to_Send.Listita_M, list_mod.GetValue(i).(Modulines))
-	}
-	for i := 0; i < list_tablitas.Len(); i++ {
-		lista_to_Send.Listita_T = append(lista_to_Send.Listita_T, list_tablitas.GetValue(i).(Tablitas))
 	}
 
 	tmpl.ExecuteTemplate(w, "Reportes.html", lista_to_Send)
@@ -149,6 +139,11 @@ func (this *TreeShapeListener) ExitStart(ctx *parser.StartContext) {
 			}
 		}
 	*/
+	for _, s := range result.ToArray() {
+		if reflect.TypeOf(s).String() == "modulos.Modulos" {
+			s.(p_Modulos.Modulos).Ejecutar(&controlador, &generador, globalEnv, env_uni_tmp)
+		}
+	}
 
 	for _, s := range result.ToArray() {
 		if reflect.TypeOf(s).String() == "structs.Struct" {
@@ -168,6 +163,7 @@ func (this *TreeShapeListener) ExitStart(ctx *parser.StartContext) {
 	generador.Func_Nat_Int_String()
 	generador.Func_Nat_Double_String()
 	generador.Func_Nat_Abso()
+	generador.Func_Nat_Index_Out_Range()
 
 	for _, s := range result.ToArray() {
 		if reflect.TypeOf(s).String() == "instruction.Funcion" {
@@ -211,6 +207,30 @@ func (this *TreeShapeListener) ExitStart(ctx *parser.StartContext) {
 	salida += "\nreturn;\n}\n"
 	controlador.Consola = salida
 
+	sup := arraylist.New()
+	sup2 := arraylist.New()
+	env_uni = env_uni_tmp
+	for _, element := range globalEnv.GetModulos_Env() {
+
+		a := Modulines{
+			Nombre: element.Id,
+			Line:   element.Fila,
+		}
+		sup2.Add(a)
+	}
+
+	for _, element := range env_uni.GetVariable_Env() {
+		a := Simbolines{
+			Id:        element.Id,
+			Tipo_Dato: GetType(element.Tipo),
+			Ambito:    element.Ambito,
+			Fila:      element.Fila,
+			Columna:   element.Columna,
+		}
+		sup.Add(a)
+	}
+	list_mod = sup2
+	list_sim = sup
 	/*
 		env_uni = env_uni_tmp
 		sup := arraylist.New()

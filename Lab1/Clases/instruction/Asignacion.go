@@ -2,6 +2,7 @@ package instruction
 
 import (
 	p_Controlador "LAB1/Clases/Controlador"
+	p_Errores "LAB1/Clases/Errores"
 	p_Generador "LAB1/Clases/Generador"
 	p_Enviroment "LAB1/Clases/enviroment"
 	p_Interface "LAB1/Clases/interfaces"
@@ -37,6 +38,12 @@ func (p Asignacion) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 	generador.AddComent("INICIO ASIGNACION")
 	temporalin2 := generador.NewTemp()
 	result = p.Expresion.Ejecutar(controlador, generador, env, env_uni)
+	if result.Type == p_Interface.NULL {
+		//TODO AGREGAR ERROR a = 4+5;
+		newErr := p_Errores.NewError("La variable No se puede asignar", env.(p_Enviroment.Enviroment).HaveFatha(), p.Line, p.Columna)
+		controlador.Errores.Add(newErr)
+		return result
+	}
 	if result.IsP {
 		if result.Type == p_Interface.INTEGER || result.Type == p_Interface.FLOAT || result.Type == p_Interface.USIZE {
 			generador.AddExpression(temporalin2, result.Valor, "", "")
@@ -83,7 +90,7 @@ func (p Asignacion) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 		}
 
 		if p.Id_Atributo != "" {
-
+			//ASIGNACION STRUCTS
 			sup := env.(p_Enviroment.Enviroment).GetVariable(controlador, p.Id, p.Line, p.Columna)
 			id_s := sup.Valor.(p_Interface.Symbol).Valor.(string)
 			var pos_fin int
@@ -99,6 +106,7 @@ func (p Asignacion) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 			generador.AddStack(temporalin, temporalin2)
 
 		} else if p.Acces_Array.Len() != 0 {
+			//ASIGNACION ARRAYS/VECTOR
 			array := env.(p_Enviroment.Enviroment).GetVariable(controlador, p.Id, p.Line, p.Columna)
 			pos := strconv.Itoa(array.Posicion)
 			temporali := generador.NewTemp()
@@ -138,7 +146,13 @@ func (p Asignacion) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 			}
 			generador.AddHeap(pos, temporalin2)
 		} else {
+			//ASIGNACION VARIABLES
 			sup := env.(p_Enviroment.Enviroment).GetVariable(controlador, p.Id, p.Line, p.Columna)
+			if !sup.IsMut {
+				newErr := p_Errores.NewError("La variable no es Mutable", env.(p_Enviroment.Enviroment).HaveFatha(), p.Line, p.Columna)
+				controlador.Errores.Add(newErr)
+				return result
+			}
 			temporalin := generador.NewTemp()
 			a := fmt.Sprintf("%v", sup.Posicion)
 			generador.AddExpression(temporalin, "P", a, "+")

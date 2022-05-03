@@ -26,7 +26,28 @@ func NewEnviroment(father interface{}) Enviroment {
 }
 
 func (env Enviroment) GetSize() int {
-	return env.size["size"]
+
+	//return env.size["size"]
+	sup := env
+	for {
+		if sup.father == nil {
+			return sup.size["size"]
+		} else {
+			sup = sup.father.(Enviroment)
+		}
+	}
+}
+
+func (env Enviroment) AddSize() {
+	sup := env
+	for {
+		if sup.father == nil {
+			sup.size["size"] = sup.size["size"] + 1
+			return
+		} else {
+			sup = sup.father.(Enviroment)
+		}
+	}
 }
 
 func (env Enviroment) SaveVarible(controlador *p_Controlador.Controlador2, id string, value interfaces.Symbol, tipo interfaces.TipoExpresion, ismut bool, ambito string, available interfaces.Available, line int, column int) {
@@ -34,7 +55,6 @@ func (env Enviroment) SaveVarible(controlador *p_Controlador.Controlador2, id st
 
 		newErr := p_Errores.NewError("La variable ya existe", env.HaveFatha(), line, column)
 		controlador.Errores.Add(newErr)
-		controlador.Agregar_Consola("La variable ya existe")
 		return
 	}
 	env.variable[id] = interfaces.Symbol{
@@ -46,9 +66,11 @@ func (env Enviroment) SaveVarible(controlador *p_Controlador.Controlador2, id st
 		Fila:     line,
 		Columna:  column,
 		Visible:  available,
-		Posicion: env.size["size"],
+		Posicion: env.GetSize(),
 	}
-	env.size["size"] = env.size["size"] + 1
+
+	env.AddSize()
+	//env.size["size"] = env.size["size"] + 1
 }
 
 func (env Enviroment) GetVariable(controlador *p_Controlador.Controlador2, id string, line int, column int) interfaces.Symbol {

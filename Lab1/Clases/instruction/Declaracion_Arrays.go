@@ -44,7 +44,7 @@ func (p Declaration_Array) Ejecutar(controlador *p_Controlador.Controlador2, gen
 		newSym := p_Interface.Symbol{
 			Id:       p.Id,
 			Tipo:     p_Interface.ARRAY,
-			Valor:    p.Tipo_Datos,
+			Valor:    p.Tipo_Datos.Tipo,
 			IsMut:    p.IsMut,
 			Ambito:   env.(p_Enviroment.Enviroment).HaveFatha(),
 			Fila:     p.Line,

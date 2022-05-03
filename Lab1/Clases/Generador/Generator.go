@@ -685,6 +685,30 @@ func (g *Generador) Func_Nat_Double_String() {
 
 }
 
+func (g *Generador) Func_Nat_Index_Out_Range() {
+	g.Ini_func("void", "Native_Out_Range")
+	g.AddPrint("c", "(int)73")
+	g.AddPrint("c", "(int)110")
+	g.AddPrint("c", "(int)100")
+	g.AddPrint("c", "(int)101")
+	g.AddPrint("c", "(int)120")
+	g.AddPrint("c", "(int)32")
+	g.AddPrint("c", "(int)79")
+	g.AddPrint("c", "(int)117")
+	g.AddPrint("c", "(int)116")
+	g.AddPrint("c", "(int)32")
+	g.AddPrint("c", "(int)79")
+	g.AddPrint("c", "(int)102")
+	g.AddPrint("c", "(int)32")
+	g.AddPrint("c", "(int)82")
+	g.AddPrint("c", "(int)97")
+	g.AddPrint("c", "(int)110")
+	g.AddPrint("c", "(int)103")
+	g.AddPrint("c", "(int)101")
+	g.AddPrint("c", "(int)10")
+	g.Finish_func()
+}
+
 func (g *Generador) Func_Nat_Abso() {
 	g.Ini_func("void", "Native_Abs")
 	temporalin1 := g.NewTemp()

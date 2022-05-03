@@ -36,6 +36,7 @@ func (p Match) Ejecutar(controlador *p_Controlador.Controlador2, generador *p_Ge
 	result = p.Expresion.Ejecutar(controlador, generador, env, env_uni)
 	defaultLabel := generador.NewLabel()
 	exitLabel := generador.NewLabel()
+	tempEnv := p_Enviroment.NewEnviroment(env)
 	var tempHeapM string
 	if result.IsP {
 		if result.Type == p_Interfaces.INTEGER || result.Type == p_Interfaces.FLOAT {
@@ -80,7 +81,7 @@ func (p Match) Ejecutar(controlador *p_Controlador.Controlador2, generador *p_Ge
 		for i, brazin := range a.ToArray() {
 
 			bra := brazin.(p_Interfaces.Expresion)
-			sup := bra.Ejecutar(controlador, generador, env, env_uni)
+			sup := bra.Ejecutar(controlador, generador, tempEnv, env_uni)
 
 			if sup.Type == p_Interfaces.INTEGER || sup.Type == p_Interfaces.FLOAT {
 				generador.AddIf(generador.ExpMatch.(p_Interfaces.Value).Valor, sup.Valor, "==", trueLabel)
@@ -107,7 +108,7 @@ func (p Match) Ejecutar(controlador *p_Controlador.Controlador2, generador *p_Ge
 				temporalin2 := generador.NewTemp()
 				temporalin3 := generador.NewTemp()
 
-				generador.AddExpression("P", "P", strconv.Itoa(env.(p_Enviroment.Enviroment).GetSize()), "+")
+				generador.AddExpression("P", "P", strconv.Itoa(tempEnv.GetSize()), "+")
 				generador.AddExpression(temporalin1, "P", "1", "+")
 				if result.IsCV {
 					generador.AddStack(temporalin1, result.Valor)
@@ -119,7 +120,7 @@ func (p Match) Ejecutar(controlador *p_Controlador.Controlador2, generador *p_Ge
 				generador.AddStack(temporalin2, tmpBra)
 				generador.Bring_Func("Native_Compare_Strings")
 				generador.AddExpression(temporalin3, "STACK[(int)P]", "", "")
-				generador.AddExpression("P", "P", strconv.Itoa(env.(p_Enviroment.Enviroment).GetSize()), "-")
+				generador.AddExpression("P", "P", strconv.Itoa(tempEnv.GetSize()), "-")
 				generador.AddIf(temporalin3, "1", "==", trueLabel)
 				if i == a.Len()-1 {
 					generador.AddGoTo(falseLabel)
@@ -136,7 +137,7 @@ func (p Match) Ejecutar(controlador *p_Controlador.Controlador2, generador *p_Ge
 
 		}
 		generador.AddLabel(trueLabel)
-		instr.(p_Interfaces.Instruction).Ejecutar(controlador, generador, env, env_uni)
+		instr.(p_Interfaces.Instruction).Ejecutar(controlador, generador, tempEnv, env_uni)
 
 		generador.AddGoTo(exitLabel)
 
@@ -146,7 +147,7 @@ func (p Match) Ejecutar(controlador *p_Controlador.Controlador2, generador *p_Ge
 
 	generador.AddComent("INICIO DEFAULT")
 	generador.AddLabel(defaultLabel)
-	p.Default.Ejecutar(controlador, generador, env, env_uni)
+	p.Default.Ejecutar(controlador, generador, tempEnv, env_uni)
 	generador.AddComent("FINAL DEFAULT")
 	generador.AddLabel(exitLabel)
 	generador.AddComent("FINAL MATCH")

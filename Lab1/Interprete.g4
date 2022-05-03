@@ -257,14 +257,8 @@ vector_decl returns[ interfaces.Instruction instr ]
     | LET MUT id1=ID DPTS VEC MENOR id2=ID MAYOR IGUAL ea=vector_expr PYC { 
         $instr = instruction.NewDeclaration_Vector($id1.text, interfaces.STRUCT, $ea.p, $id2.text ,true, $LET.line,$LET.pos) 
     }
-    | LET MUT ID IGUAL ea=vector_expr PYC {
-        $instr = instruction.NewDeclaration_Vector($ID.text, 4, $ea.p, "" ,true, $LET.line,$LET.pos) 
-    }
     | LET ID DPTS VEC MENOR tipo MAYOR IGUAL ea=vector_expr PYC {
         $instr = instruction.NewDeclaration_Vector($ID.text, $tipo.te, $ea.p, "" ,false, $LET.line,$LET.pos) 
-    }
-    | LET ID IGUAL ea=vector_expr PYC {
-        $instr = instruction.NewDeclaration_Vector($ID.text, 4, $ea.p, "" ,false, $LET.line,$LET.pos) 
     }
     | LET id1=ID DPTS VEC MENOR id2=ID MAYOR IGUAL ea=vector_expr PYC {
         $instr = instruction.NewDeclaration_Vector($id1.text, interfaces.STRUCT, $ea.p, $id2.text ,false, $LET.line,$LET.pos) 
@@ -284,7 +278,7 @@ vector_expr returns [ interfaces.Expresion p ]
         var a,b,c interfaces.Expresion
         $p =  vector.NewVector(arrayList.New(),a,b,true,c,$NEWI.line,$NEWI.pos) 
     }
-    |VEC EXCLA DPTS DPTS WITH_CAP PARA expression_vec_Arr PARC { 
+    |VEC DPTS DPTS WITH_CAP PARA expression_vec_Arr PARC { 
         var a,b interfaces.Expresion
         $p =  vector.NewVector(arrayList.New(),a,b,false,$expression_vec_Arr.p,$WITH_CAP.line,$WITH_CAP.pos) 
     }

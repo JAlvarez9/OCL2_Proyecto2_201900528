@@ -3,6 +3,7 @@ package sentenciasexpr
 import (
 	p_Controlador "LAB1/Clases/Controlador"
 	p_Generador "LAB1/Clases/Generador"
+	p_Enviroment "LAB1/Clases/enviroment"
 	p_Interfaces "LAB1/Clases/interfaces"
 	"strconv"
 
@@ -32,6 +33,7 @@ func (p If_expr) Ejecutar(controlador *p_Controlador.Controlador2, generador *p_
 	var result p_Interfaces.Value
 	var regreso p_Interfaces.Value
 	var resultTemp string
+	tempEnv := p_Enviroment.NewEnviroment(env)
 	generador.AddComent("INICIO IF-EXPRESION")
 	if generador.Valor_Return_Expre == "" {
 		resultTemp = generador.NewTemp()
@@ -63,9 +65,9 @@ func (p If_expr) Ejecutar(controlador *p_Controlador.Controlador2, generador *p_
 	for i, s := range p.Bloque_if.ToArray() {
 		//s.(p_Interfaces.Expresion).Ejecutar(controlador, generador, env, env_uni)
 		if i != p.Bloque_if.Len()-1 {
-			s.(p_Interfaces.Instruction).Ejecutar(controlador, generador, env, env_uni)
+			s.(p_Interfaces.Instruction).Ejecutar(controlador, generador, tempEnv, env_uni)
 		} else {
-			a := s.(p_Interfaces.Expresion).Ejecutar(controlador, generador, env, env_uni)
+			a := s.(p_Interfaces.Expresion).Ejecutar(controlador, generador, tempEnv, env_uni)
 			if a.Type == p_Interfaces.STR || a.Type == p_Interfaces.STRING {
 				tempo := generador.NewTemp()
 				generador.AddComent("INICIO STRING")
@@ -97,9 +99,9 @@ func (p If_expr) Ejecutar(controlador *p_Controlador.Controlador2, generador *p_
 	for i, s := range p.Bloque_else.ToArray() {
 		//s.(p_Interfaces.Expresion).Ejecutar(controlador, generador, env, env_uni)
 		if i != p.Bloque_if.Len()-1 {
-			s.(p_Interfaces.Instruction).Ejecutar(controlador, generador, env, env_uni)
+			s.(p_Interfaces.Instruction).Ejecutar(controlador, generador, tempEnv, env_uni)
 		} else {
-			a := s.(p_Interfaces.Expresion).Ejecutar(controlador, generador, env, env_uni)
+			a := s.(p_Interfaces.Expresion).Ejecutar(controlador, generador, tempEnv, env_uni)
 			if a.Type == p_Interfaces.STR || a.Type == p_Interfaces.STRING {
 				tempo := generador.NewTemp()
 				generador.AddComent("INICIO STRING")

@@ -41,17 +41,20 @@ func (p ArrayAccess) Ejecutar(controlador *p_Controlador.Controlador2, generador
 	generador.AddExpression(temporalin1, temporalin1, "1", "+")
 	generador.AddExpression(temporalin1, temporalin1, index_arr.Valor, "+")
 	generador.AddExpression(temporalin3, "HEAP[(int)"+temporalin1+"]", "", "")
+	generador.AddIf(temporalin3, "-415", "==", labelsito1)
 	generador.AddGoTo(labelsito3)
 	generador.AddLabel(labelsito1)
 	generador.Bring_Func("Native_Print_Null")
 	generador.AddExpression(temporalin3, "-1", "", "")
 	generador.AddGoTo(labelsito3)
 	generador.AddLabel(labelsito2)
-	//BRING FUNC ERROR POS
+	generador.Bring_Func("Native_Out_Range")
 	generador.AddExpression(temporalin3, "-1", "", "")
 	generador.AddLabel(labelsito3)
-
 	generador.AddComent("FIN CALL ARRAY/VECTOR")
+	result.Type = arraysito.Type
+	result.Simbolin.Tipo = arraysito.Type
 	result.Valor = temporalin3
+	result.IsCV = true
 	return result
 }

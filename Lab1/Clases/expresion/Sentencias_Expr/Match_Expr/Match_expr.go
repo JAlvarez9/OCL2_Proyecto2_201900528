@@ -41,6 +41,7 @@ func (p Match_expr) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 	} else {
 		resultTemp = generador.Valor_Return_Expre
 	}
+	tempEnv := p_Enviroment.NewEnviroment(env)
 	regreso.Valor = resultTemp
 	result = p.Expresion.Ejecutar(controlador, generador, env, env_uni)
 	defaultLabel := generador.NewLabel()
@@ -89,7 +90,7 @@ func (p Match_expr) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 		for _, brazin := range a.ToArray() {
 
 			bra := brazin.(p_Interfaces.Expresion)
-			sup := bra.Ejecutar(controlador, generador, env, env_uni)
+			sup := bra.Ejecutar(controlador, generador, tempEnv, env_uni)
 
 			if sup.Type == p_Interfaces.INTEGER || sup.Type == p_Interfaces.FLOAT {
 				generador.AddIf(generador.ExpMatch.(p_Interfaces.Value).Valor, sup.Valor, "==", trueLabel)
@@ -141,7 +142,7 @@ func (p Match_expr) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 
 		}
 		generador.AddLabel(trueLabel)
-		instr.(p_Interfaces.Instruction).Ejecutar(controlador, generador, env, env_uni)
+		instr.(p_Interfaces.Instruction).Ejecutar(controlador, generador, tempEnv, env_uni)
 
 		generador.AddGoTo(exitLabel)
 
@@ -152,7 +153,7 @@ func (p Match_expr) Ejecutar(controlador *p_Controlador.Controlador2, generador 
 
 	generador.AddComent("INICIO DEFAULT")
 	generador.AddLabel(defaultLabel)
-	p.Default.Ejecutar(controlador, generador, env, env_uni)
+	p.Default.Ejecutar(controlador, generador, tempEnv, env_uni)
 	generador.AddComent("FINAL DEFAULT")
 	generador.AddLabel(exitLabel)
 	generador.AddComent("FINAL MATCH-EXPRE")

@@ -3,6 +3,7 @@ package sentenciaciclica
 import (
 	p_Controlador "LAB1/Clases/Controlador"
 	p_Generador "LAB1/Clases/Generador"
+	p_Enviroment "LAB1/Clases/enviroment"
 	p_Interfaces "LAB1/Clases/interfaces"
 
 	arrayList "github.com/colegno/arraylist"
@@ -27,12 +28,13 @@ func NewLoop(bloque *arrayList.List, line int, columna int) Loop {
 func (p Loop) Ejecutar(controlador *p_Controlador.Controlador2, generador *p_Generador.Generador, env interface{}, env_uni interface{}) p_Interfaces.Value {
 	var result p_Interfaces.Value
 
+	temoEnv := p_Enviroment.NewEnviroment(env)
 	initalLabel := generador.NewLabel()
 	finalLabel := generador.NewLabel()
 	generador.AddBreakList(finalLabel)
 	generador.AddLabel(initalLabel)
 	for _, s := range p.Bloque_loop.ToArray() {
-		s.(p_Interfaces.Instruction).Ejecutar(controlador, generador, env, env_uni)
+		s.(p_Interfaces.Instruction).Ejecutar(controlador, generador, temoEnv, env_uni)
 	}
 	generador.AddGoTo(initalLabel)
 	generador.AddLabel(finalLabel)

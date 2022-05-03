@@ -3,6 +3,7 @@ package sentenciasexpr
 import (
 	p_Controlador "LAB1/Clases/Controlador"
 	p_Generador "LAB1/Clases/Generador"
+	p_Enviroment "LAB1/Clases/enviroment"
 	p_Interfaces "LAB1/Clases/interfaces"
 	"fmt"
 
@@ -28,6 +29,7 @@ func NewLoop_expr(bloque *arrayList.List, line int, colu int) Loop_expr {
 func (p Loop_expr) Ejecutar(controlador *p_Controlador.Controlador2, generador *p_Generador.Generador, env interface{}, env_uni interface{}) p_Interfaces.Value {
 	//var result p_Interfaces.Value
 	var regreso p_Interfaces.Value
+	tempEnv := p_Enviroment.NewEnviroment(env)
 	generador.AddComent("INICIO LOOP-EXPRESION")
 	initalLabel := generador.NewLabel()
 	finalLabel := generador.NewLabel()
@@ -42,7 +44,7 @@ func (p Loop_expr) Ejecutar(controlador *p_Controlador.Controlador2, generador *
 	generador.AddBreakList(finalLabel)
 	generador.AddLabel(initalLabel)
 	for _, s := range p.Bloque_Loop.ToArray() {
-		a := s.(p_Interfaces.Instruction).Ejecutar(controlador, generador, env, env_uni)
+		a := s.(p_Interfaces.Instruction).Ejecutar(controlador, generador, tempEnv, env_uni)
 		fmt.Println(a.Type)
 	}
 	generador.AddGoTo(initalLabel)
