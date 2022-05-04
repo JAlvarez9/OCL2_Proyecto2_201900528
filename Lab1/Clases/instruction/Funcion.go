@@ -3,6 +3,7 @@ package instruction
 import (
 	p_Controlador "LAB1/Clases/Controlador"
 	p_Generador "LAB1/Clases/Generador"
+	p_Enviroment "LAB1/Clases/enviroment"
 	p_Interface "LAB1/Clases/interfaces"
 
 	arrayList "github.com/colegno/arraylist"
@@ -31,12 +32,18 @@ func NewFuncion(id string, paras *arrayList.List, tipito p_Interface.TipoExpresi
 
 func (p Funcion) Ejecutar(controlador *p_Controlador.Controlador2, generador *p_Generador.Generador, env interface{}, env_uni interface{}) p_Interface.Value {
 	var result p_Interface.Value
-
-	for _, s := range p.Bloque_funcion.ToArray() {
-		s.(p_Interface.Expresion).Ejecutar(controlador, generador, env, env_uni)
-
+	tempEnv := p_Enviroment.NewEnviroment(env)
+	if p.Id != "main" {
+		generador.SetisFuncTrue()
+		generador.Ini_func("void", p.Id)
 	}
-
+	for _, s := range p.Bloque_funcion.ToArray() {
+		s.(p_Interface.Expresion).Ejecutar(controlador, generador, tempEnv, env_uni)
+	}
+	if p.Id != "main" {
+		generador.Finish_func()
+		generador.SetLogicFalse()
+	}
 	return result
 }
 

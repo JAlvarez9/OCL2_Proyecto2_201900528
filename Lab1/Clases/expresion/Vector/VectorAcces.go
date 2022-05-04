@@ -51,7 +51,7 @@ func (p VectorAccess) Ejecutar(controlador *p_Controlador.Controlador2, generado
 	generador.AddExpression(temporalin3, "-1", "", "")
 	generador.AddLabel(labelsito3)
 	generador.AddComent("FIN CALL ARRAY/VECTOR")
-	result.Type = arraysito.Type
+	//result.Type = arraysito.Type
 	result.Simbolin.Tipo = arraysito.Type
 	result.Valor = temporalin3
 	result.IsCV = true

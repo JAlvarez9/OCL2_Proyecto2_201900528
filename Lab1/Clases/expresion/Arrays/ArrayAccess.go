@@ -54,6 +54,10 @@ func (p ArrayAccess) Ejecutar(controlador *p_Controlador.Controlador2, generador
 	generador.AddComent("FIN CALL ARRAY/VECTOR")
 	result.Type = arraysito.Type
 	result.Simbolin.Tipo = arraysito.Type
+	/*if generador.IsLen {
+		result.Valor = arraysito.Valor
+	} else {
+	}*/
 	result.Valor = temporalin3
 	result.IsCV = true
 	return result

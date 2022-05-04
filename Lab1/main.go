@@ -164,7 +164,20 @@ func (this *TreeShapeListener) ExitStart(ctx *parser.StartContext) {
 	generador.Func_Nat_Double_String()
 	generador.Func_Nat_Abso()
 	generador.Func_Nat_Index_Out_Range()
+	generador.Func_Nat_Len_Vector()
+	generador.Func_Nat_Push_Vector()
+	generador.Func_Nat_Insert_Vector()
+	generador.Func_Nat_Remove_Vector()
 
+	for _, s := range result.ToArray() {
+		if reflect.TypeOf(s).String() == "instruction.Funcion" {
+			if s.(p_Instruction.Funcion).Id != "main" {
+				s.(interfaces.Instruction).Ejecutar(&controlador, &generador, globalEnv, env_uni_tmp)
+
+			}
+			//s.(p_Instruction.Funcion).Ejecutar(&controlador, &generador, globalEnv, env_uni_tmp)
+		}
+	}
 	for _, s := range result.ToArray() {
 		if reflect.TypeOf(s).String() == "instruction.Funcion" {
 			if s.(p_Instruction.Funcion).Id == "main" {

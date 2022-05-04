@@ -21,6 +21,8 @@ type Generador struct {
 	isBreak    *arrayList.List
 	isContinue *arrayList.List
 
+	IsLen bool
+
 	ExpMatch interface{}
 
 	Valor_Return_Expre string
@@ -84,6 +86,14 @@ func (g *Generador) SetLogicTrue() {
 
 func (g *Generador) SetLogicFalse() {
 	g.isLogic = false
+}
+
+func (g *Generador) SetisFuncTrue() {
+	g.isFunc = true
+}
+
+func (g *Generador) SetisFuncFalse() {
+	g.isFunc = false
 }
 
 func (g *Generador) GetLastBreak() string {
@@ -724,6 +734,151 @@ func (g *Generador) Func_Nat_Abso() {
 	g.AddExpression(temporalin2, temporalin2, "-1", "*")
 	g.AddLabel(labelsito2)
 	g.AddStack("P", temporalin2)
+	g.Finish_func()
+}
+
+func (g *Generador) Func_Nat_Len_Vector() {
+	g.Ini_func("void", "Native_Len_Vector")
+	temporalin1 := g.NewTemp()
+	temporalin2 := g.NewTemp()
+	temporalin3 := g.NewTemp()
+	temporalin4 := g.NewTemp()
+	temporalin5 := g.NewTemp()
+	labelsito1 := g.NewLabel()
+	labelsito2 := g.NewLabel()
+
+	g.AddExpression(temporalin1, "P", "1", "+")
+	g.AddExpression(temporalin2, "STACK[(int)"+temporalin1+"]", "", "")
+	g.AddExpression(temporalin3, "0", "", "")
+	g.AddIf(temporalin2, "-1", "==", labelsito1)
+	g.AddExpression(temporalin4, "HEAP[(int)"+temporalin2+"]", "", "")
+	g.AddExpression(temporalin2, temporalin2, "1", "+")
+	g.AddExpression(temporalin5, "HEAP[(int)"+temporalin2+"]", "", "")
+	g.AddLabel(labelsito2)
+	g.AddIf(temporalin3, temporalin4, ">=", labelsito1)
+	g.AddIf(temporalin5, "-415", "==", labelsito1)
+	g.AddExpression(temporalin3, temporalin3, "1", "+")
+	g.AddExpression(temporalin2, temporalin2, "1", "+")
+	g.AddExpression(temporalin5, "HEAP[(int)"+temporalin2+"]", "", "")
+	g.AddGoTo(labelsito2)
+	g.AddLabel(labelsito1)
+	g.AddStack("P", temporalin3)
+	g.Finish_func()
+
+}
+
+func (g *Generador) Func_Nat_Push_Vector() {
+	g.Ini_func("void", "Native_Push_Vector")
+	temporalin1 := g.NewTemp()
+	temporalin2 := g.NewTemp()
+	temporalin3 := g.NewTemp()
+	temporalin4 := g.NewTemp()
+	temporalin5 := g.NewTemp()
+	temporalin6 := g.NewTemp()
+	temporalin7 := g.NewTemp()
+	labelsito1 := g.NewLabel()
+	labelsito2 := g.NewLabel()
+	labelsito3 := g.NewLabel()
+
+	g.AddExpression(temporalin1, "P", "1", "+")
+	g.AddExpression(temporalin2, "STACK[(int)"+temporalin1+"]", "", "")
+	g.AddExpression(temporalin3, "P", "2", "+")
+	g.AddExpression(temporalin4, "STACK[(int)"+temporalin3+"]", "", "")
+	g.AddExpression(temporalin5, "0", "", "")
+	g.AddIf(temporalin2, "-1", "==", labelsito3)
+	g.AddExpression(temporalin6, "HEAP[(int)"+temporalin2+"]", "", "")
+	g.AddExpression(temporalin2, temporalin2, "1", "+")
+	g.AddExpression(temporalin7, "HEAP[(int)"+temporalin2+"]", "", "")
+	g.AddLabel(labelsito2)
+	g.AddIf(temporalin5, temporalin6, ">=", labelsito3)
+	g.AddIf(temporalin7, "-415", "==", labelsito1)
+	g.AddExpression(temporalin5, temporalin5, "1", "+")
+	g.AddExpression(temporalin2, temporalin2, "1", "+")
+	g.AddExpression(temporalin7, "HEAP[(int)"+temporalin2+"]", "", "")
+	g.AddGoTo(labelsito2)
+	g.AddLabel(labelsito1)
+	g.AddHeap(temporalin2, temporalin4)
+	g.AddLabel(labelsito3)
+
+	g.Finish_func()
+}
+
+func (g *Generador) Func_Nat_Insert_Vector() {
+	g.Ini_func("void", "Native_Insert_Vector")
+	temporalin0 := g.NewTemp()
+	temporalin1 := g.NewTemp()
+	temporalin2 := g.NewTemp()
+	temporalin3 := g.NewTemp()
+	temporalin4 := g.NewTemp()
+	temporalin5 := g.NewTemp()
+	temporalin6 := g.NewTemp()
+	labelsito0 := g.NewLabel()
+	labelsito1 := g.NewLabel()
+
+	g.AddExpression(temporalin0, "P", "1", "+")
+	g.AddExpression(temporalin1, "STACK[(int)"+temporalin0+"]", "", "")
+	g.AddExpression(temporalin2, "P", "2", "+")
+	g.AddExpression(temporalin3, "STACK[(int)"+temporalin2+"]", "", "")
+	g.AddExpression(temporalin4, "P", "3", "+")
+	g.AddExpression(temporalin5, "STACK[(int)"+temporalin4+"]", "", "")
+	g.AddIf(temporalin1, "-1", "==", labelsito0)
+	g.AddExpression(temporalin6, "HEAP[(int)"+temporalin1+"]", "", "")
+	g.AddIf(temporalin3, temporalin6, ">=", labelsito0)
+	g.AddExpression(temporalin1, temporalin1, "1", "+")
+	g.AddExpression(temporalin1, temporalin3, temporalin1, "+")
+	g.AddHeap(temporalin1, temporalin5)
+	g.AddGoTo(labelsito1)
+	g.AddLabel(labelsito0)
+	g.Bring_Func("Native_Out_Range")
+	g.AddLabel(labelsito1)
+	g.Finish_func()
+
+}
+
+func (g *Generador) Func_Nat_Remove_Vector() {
+	g.Ini_func("void", "Native_Remove_Vector")
+
+	temporalin0 := g.NewTemp()
+	temporalin1 := g.NewTemp()
+	temporalin2 := g.NewTemp()
+	temporalin3 := g.NewTemp()
+	temporalin4 := g.NewTemp()
+	temporalin5 := g.NewTemp()
+	temporalin6 := g.NewTemp()
+	temporalin7 := g.NewTemp()
+	temporalin8 := g.NewTemp()
+	labelsito0 := g.NewLabel()
+	labelsito1 := g.NewLabel()
+	labelsito2 := g.NewLabel()
+	labelsito3 := g.NewLabel()
+
+	g.AddExpression(temporalin0, "P", "1", "+")
+	g.AddExpression(temporalin1, "STACK[(int)"+temporalin1+"]", "", "")
+	g.AddExpression(temporalin2, "P", "2", "+")
+	g.AddExpression(temporalin3, "STACK[(int)"+temporalin2+"]", "", "")
+	g.AddExpression(temporalin4, "HEAP[(int)"+temporalin1+"]", "", "")
+	g.AddExpression(temporalin5, "0", "", "")
+	g.AddExpression(temporalin6, "0", "", "")
+	g.AddExpression(temporalin8, "0", "", "")
+	g.AddIf(temporalin3, temporalin4, ">=", labelsito0)
+	g.AddExpression(temporalin1, temporalin1, "1", "+")
+	g.AddExpression(temporalin1, temporalin1, temporalin3, "+")
+	g.AddExpression(temporalin8, "HEAP[(int)"+temporalin1+"]", "", "")
+	g.AddLabel(labelsito1)
+	g.AddExpression(temporalin7, temporalin1, "1", "+")
+	g.AddIf(temporalin7, temporalin4, ">", labelsito3)
+	g.AddExpression(temporalin5, "HEAP[(int)"+temporalin7+"]", "", "")
+	g.AddHeap(temporalin1, temporalin5)
+	g.AddExpression(temporalin1, temporalin1, "1", "+")
+	g.AddGoTo(labelsito1)
+	g.AddLabel(labelsito3)
+	g.AddExpression(temporalin7, temporalin7, "1", "-")
+	g.AddHeap(temporalin7, "-415")
+	g.AddGoTo(labelsito2)
+	g.AddLabel(labelsito0)
+	g.Bring_Func("Native_Out_Range")
+	g.AddLabel(labelsito2)
+	g.AddStack("P", temporalin8)
 	g.Finish_func()
 }
 

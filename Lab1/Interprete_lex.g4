@@ -102,6 +102,7 @@ FUNCT:      'fn';
 RETURNASO: 'return';
 PUBLI:      'pub';
 MODULO:     'mod';
+CAPACITY:   'capacity';
 
 
 ID:     ([a-zA-Z_])[a-zA-Z0-9_]*;

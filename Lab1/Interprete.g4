@@ -286,12 +286,14 @@ vector_expr returns [ interfaces.Expresion p ]
 
 
 sent_funciones_Vec returns [ interfaces.Instruction instr ]
-    : ID  PNT PUSH PARA expression PARC PYC { $instr = funcionesvectores.NewPush($ID.text, $expression.p, $PUSH.line, $PUSH.pos) }
-    | ID PNT INSERT PARA exp1=expression COMA exp2=expression PARC PYC { 
-        $instr = funcionesvectores.NewInsert($ID.text, $exp1.p, $exp2.p, $INSERT.line, $INSERT.pos) 
+    : exp1=expression  PNT PUSH PARA exp2=expression PARC PYC { 
+        $instr = funcionesvectores.NewPush($exp1.p, $exp2.p, $PUSH.line, $PUSH.pos) 
     }
-    |ID PNT REMOVE PARA expression PARC PYC { 
-        $instr = funcionesvectores.NewRemove_instr($ID.text, $expression.p, $REMOVE.line, $REMOVE.pos) 
+    | exp3=expression PNT INSERT PARA exp1=expression COMA exp2=expression PARC PYC { 
+        $instr = funcionesvectores.NewInsert($exp3.p, $exp1.p, $exp2.p, $INSERT.line, $INSERT.pos) 
+    }
+    | exp1 = expression PNT REMOVE PARA exp2=expression PARC PYC { 
+        $instr = funcionesvectores.NewRemove_instr($exp1.p, $exp2.p, $REMOVE.line, $REMOVE.pos) 
     }
     ;
 
@@ -543,6 +545,7 @@ expression_vec_Arr returns[interfaces.Expresion p]
     | opIz = expression_vec_Arr op=MODUL opDe = expression_vec_Arr {$p=Operacion.NewOperacion_Arit($opIz.p,$op.text,$opDe.p,false,$op.line,$op.pos)} 
     | opIz = expression_vec_Arr ope=(MUL|DIV) opDe = expression_vec_Arr {$p=Operacion.NewOperacion_Arit($opIz.p,$ope.text,$opDe.p,false,$ope.line,$ope.pos)}
     | opIz = expression_vec_Arr ope=(SUM|REST) opDe = expression_vec_Arr {$p=Operacion.NewOperacion_Arit($opIz.p,$ope.text,$opDe.p,false,$ope.line,$ope.pos)}
+    | ope=REST opDe2 = expression {$p=Operacion.NewOperacion_Arit($opDe2.p,$ope.text,nil,true,$ope.line,$ope.pos)}
     | opIz = expression_vec_Arr op=(MENOR|MENORIGUAL|MAYORIGUAL|MAYOR|IGUALACION|DIFERENCIACION) opDe = expression_vec_Arr {$p = Operacion.NewOperacion_Relacional($opIz.p,$op.text,$opDe.p,false,$op.line,$op.pos)}
     | PARA expression_vec_Arr PARC { $p = $expression_vec_Arr.p}
     | opIz = expression_vec_Arr ope=(AND|OR) opDe = expression_vec_Arr {$p = Operacion.NewOperacion_Logica($opIz.p,$ope.text,$opDe.p,false,$ope.line,$ope.pos)}     
@@ -580,6 +583,7 @@ expression returns[interfaces.Expresion p]
     : INT DPTS DPTS op=POW PARA opIz=expression COMA opDe=expression PARC {$p=Operacion.NewOperacion_Arit($opIz.p,$op.text,$opDe.p,false,$INT.line,$INT.pos)}
     | exp4=expression PNT TOSTRING PARA PARC { $p = funcionesnativas.NewToString($exp4.p, $TOSTRING.line, $TOSTRING.pos) }
     | FLOAT DPTS DPTS op=POWF PARA opIz=expression COMA opDe=expression PARC {$p=Operacion.NewOperacion_Arit($opIz.p,$op.text,$opDe.p,false,$FLOAT.line,$FLOAT.pos)}
+    | exp11 = expression PNT CAPACITY PARA PARC { $p = funcionesvectores.NewCapacity($exp11.p, $CAPACITY.line, $CAPACITY.pos) }
     | exp8 =expression PNT LEN PARA PARC { $p = funcionesvectores.NewLen($exp8.p, $LEN.line, $LEN.pos) }
     | opIz = expression op=MODUL opDe = expression {$p=Operacion.NewOperacion_Arit($opIz.p,$op.text,$opDe.p,false,$op.line,$op.pos)} 
     | opIz = expression ope=(MUL|DIV) opDe = expression {$p=Operacion.NewOperacion_Arit($opIz.p,$ope.text,$opDe.p,false,$ope.line,$ope.pos)}
@@ -590,7 +594,7 @@ expression returns[interfaces.Expresion p]
     | PARA expression PARC { $p = $expression.p}
     | opIz = expression ope=(AND|OR) opDe = expression {$p = Operacion.NewOperacion_Logica($opIz.p,$ope.text,$opDe.p,false,$ope.line,$ope.pos)}     
     | op=EXCLA operador = expression {$p = Operacion.NewOperacion_Logica($operador.p,$op.text,nil,true,$op.line,$op.pos)}
-    | ID PNT REMOVE PARA expression PARC { $p = funcionesvectores.NewRemove_exp($ID.text, $expression.p, $REMOVE.line, $REMOVE.pos) } 
+    | exp14=expression PNT REMOVE PARA exp15=expression PARC { $p = funcionesvectores.NewRemove_instr($exp14.p, $exp15.p, $REMOVE.line, $REMOVE.pos) } 
     | exp8 =expression PNT CONTAINS PARA PUNTERO expression PARC { $p = funcionesvectores.NewContains($exp8.p, $expression.p, $CONTAINS.line, $CONTAINS.pos ) }
     | exp4=expression PNT TOCHARS PARA PARC { $p = funcionesnativas.NewToChar($exp4.p, $TOCHARS.line, $TOCHARS.pos) }
     | exp4=expression PNT TOOWNED PARA PARC { $p = funcionesnativas.NewToString($exp4.p, $TOOWNED.line, $TOOWNED.pos) }

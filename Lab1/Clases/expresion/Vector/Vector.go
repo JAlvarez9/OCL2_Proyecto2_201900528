@@ -127,7 +127,7 @@ func (p Vector) Ejecutar(controlador *p_Controlador.Controlador2, generador *p_G
 
 				}
 			}
-			if sup.IsCV {
+			if sup.IsCV || sup.IsArit {
 				generador.AddHeap("H", sup.Valor)
 				generador.AddExpression("H", "H", "1", "+")
 			}

@@ -27,6 +27,9 @@ func NewLlamada(id string, params *arrayList.List, line int, colu int) Llamada {
 
 func (p Llamada) Ejecutar(controlador *p_Controlador.Controlador2, generador *p_Generador.Generador, env interface{}, env_uni interface{}) p_Interface.Value {
 	var result p_Interface.Value
+
+	generador.Bring_Func(p.Id)
+
 	return result
 }
 
